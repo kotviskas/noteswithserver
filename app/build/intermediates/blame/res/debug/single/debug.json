@@ -1,13 +1,5 @@
 [
     {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialog_layout.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\dialog_layout.xml"
-    },
-    {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_spinnertext.xml.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\spinnertext.xml"
     },
@@ -20,52 +12,28 @@
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\activity_main.xml"
-    },
-    {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\font_nunito.xml.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\font\\nunito.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_reg.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\fragment_reg.xml"
     },
     {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml"
-    },
-    {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_add_task.xml.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\add_task.xml"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_shapemax.png.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\shapemax.png"
     },
     {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_srochno.png.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\srochno.png"
     },
     {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_new_spinner_shape.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\new_spinner_shape.xml"
-    },
-    {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_about_note.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\activity_about_note.xml"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_add_category_name.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\add_category_name.xml"
     },
     {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_edit_24px_outlined.png.flat",
@@ -76,28 +44,16 @@
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\mainpic.png"
     },
     {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_login.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\fragment_login.xml"
+    },
+    {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_create_acc.xml.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\activity_create_acc.xml"
     },
     {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
-    },
-    {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_spinner_shape.xml.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\spinner_shape.xml"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_spinicon.png.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\spinicon.png"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_toolbar_dropshadow.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\toolbar_dropshadow.xml"
     },
     {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_cat.jpg.flat",
@@ -108,10 +64,6 @@
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\query_builder_24px_outlined.png"
     },
     {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
-    },
-    {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     },
@@ -120,20 +72,8 @@
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\date_range_24px_outlined1.png"
     },
     {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_prioretetshape.png.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\prioretetshape.png"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_plus.png.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\plus.png"
-    },
-    {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_background_splash.xml.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\background_splash.xml"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
     },
     {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_login.xml.flat",
@@ -148,14 +88,6 @@
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\back.png"
     },
     {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_note.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\activity_note.xml"
-    },
-    {
-        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
-    },
-    {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_splash.png.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\splash.png"
     },
@@ -166,6 +98,94 @@
     {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_splash.xml.flat",
         "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\activity_splash.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialog_layout.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\dialog_layout.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_shapemax.png.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\shapemax.png"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_home.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\fragment_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_new_spinner_shape.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\new_spinner_shape.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_about_note.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\activity_about_note.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_add_category_name.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\add_category_name.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_create_note.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\fragment_create_note.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_about_note.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\fragment_about_note.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_spinicon.png.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\spinicon.png"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_toolbar_dropshadow.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\toolbar_dropshadow.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_prioretetshape.png.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\prioretetshape.png"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_plus.png.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\plus.png"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_note.xml.flat",
+        "source": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\src\\main\\res\\layout\\activity_note.xml"
     },
     {
         "merged": "C:\\Users\\Victoria\\AndroidStudioProjects\\Lab2\\app\\build\\intermediates\\res\\merged\\debug\\drawable_save_animation_shape.xml.flat",
