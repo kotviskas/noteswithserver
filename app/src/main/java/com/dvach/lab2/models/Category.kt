@@ -5,29 +5,27 @@ import androidx.room.*
 
 
 @Entity
-class Category {
+data class Category (
 
-    var categoryName: String = ""
-    @Embedded
-    lateinit var categoryUser: User
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
-}
+    val name: String,
+    @PrimaryKey
+    val id: Int
+)
 
 @Dao
 interface CategoryDao {
-    @Query("SELECT * FROM Category WHERE categoryName = :name")
+    @Query("SELECT * FROM Category WHERE name = :name")
     fun getByName(name: String): Category?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(category: Category?)
 
-    @Query("SELECT categoryName FROM Category WHERE userId =:userId")
-    fun getAllNames(userId: Long): List<String>
+    @Query("SELECT name FROM Category")
+    fun getAllNames(): List<String>
 
     @Transaction
-    @Query("SELECT * FROM Category WHERE userId =:userId")
-    fun getCategoriesWithNotes(userId: Long): List<CategoryWithNotes>
+    @Query("SELECT * FROM Category")
+    fun getCategoriesWithNotes(): List<CategoryWithNotes>
 
     @Delete
     fun delete(category: Category)

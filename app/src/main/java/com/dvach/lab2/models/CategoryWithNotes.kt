@@ -9,7 +9,7 @@ data class CategoryWithNotes(
         parentColumn = "categoryName",
         entityColumn = "category"
     )
-    val notes: List<Note>
+    val tasks: List<Task>
 
 
 )

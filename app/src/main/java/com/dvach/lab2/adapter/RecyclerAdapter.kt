@@ -7,7 +7,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dvach.lab2.models.Category
-import com.dvach.lab2.models.Note
+import com.dvach.lab2.models.Task
 import com.dvach.lab2.R
 import com.dvach.lab2.models.Item
 import kotlinx.android.synthetic.main.add_task.view.*
@@ -22,11 +22,11 @@ class RecyclerAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface onItemClick {
-        fun noteClick(note: Note)
+        fun noteClick(task: Task)
     }
 
     interface onCheck {
-        fun changeCheck(note: Note)
+        fun changeCheck(task: Task)
     }
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,12 +35,12 @@ class RecyclerAdapter(
         var checkBox = itemView.findViewById<CheckBox>(R.id.checkBox);
 
 
-        fun SetNote(note: Note) {
-            headText.setText(note.name);
-            textText.setText(note.category);
-            checkBox.isChecked = note.check
+        fun SetNote(task: Task) {
+            headText.setText(task.title);
+            textText.setText(task.category);
+            checkBox.isChecked = task.check
 
-            itemView.cardView.setCardBackgroundColor(note.color)
+            itemView.cardView.setCardBackgroundColor(task.color)
 
         }
 
@@ -51,7 +51,7 @@ class RecyclerAdapter(
         var headText = itemView.findViewById<TextView>(R.id.mainTextView2)
 
         fun SetText(category: Category) {
-            headText.setText(category.categoryName);
+            headText.setText(category.name);
         }
     }
 
@@ -89,15 +89,15 @@ class RecyclerAdapter(
         if (getItemViewType(position) == POST_TYPE_HEAD) {
             (holder as HeadViewHolder).SetText(listItems[position].note_object as Category)
         } else {
-            (holder as NoteViewHolder).SetNote(listItems[position].note_object as Note)
+            (holder as NoteViewHolder).SetNote(listItems[position].note_object as Task)
             holder.itemView.setOnClickListener {
-                listener.noteClick(listItems[position].note_object as Note)
+                listener.noteClick(listItems[position].note_object as Task)
 
             }
             holder.itemView.checkBox.setOnClickListener {
-                (listItems[position].note_object as Note).check =
-                    !(listItems[position].note_object as Note).check
-                listener2.changeCheck((listItems[position].note_object as Note))
+                (listItems[position].note_object as Task).check =
+                    !(listItems[position].note_object as Task).check
+                listener2.changeCheck((listItems[position].note_object as Task))
             }
         }
     }

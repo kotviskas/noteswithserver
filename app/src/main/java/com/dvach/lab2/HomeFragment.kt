@@ -15,14 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dvach.lab2.adapter.RecyclerAdapter
 import com.dvach.lab2.models.AppDatabase
 import com.dvach.lab2.models.Item
-import com.dvach.lab2.models.Note
-import com.dvach.lab2.models.User
+import com.dvach.lab2.models.Task
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.onCheck {
 
     lateinit var sPref: SharedPreferences
-    lateinit var user: User
+
     var flag = false
     lateinit var items: ArrayList<Item>
     lateinit var adapter: RecyclerAdapter
@@ -39,9 +38,9 @@ class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.on
         super.onViewCreated(view, savedInstanceState)
        // user = intent.getSerializableExtra("user") as User
         floatingActionButton.setOnClickListener {
-            val i = Intent(requireContext(), NoteActivity::class.java)
+
          //   i.putExtra("user", user)
-            startActivity(i)
+            findNavController().navigate(R.id.createNoteFragment)
         }
         exitImage.setOnClickListener {
 
@@ -64,11 +63,11 @@ class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.on
         items = ArrayList<Item>()
 
         //   Toast.makeText(this,"sdas",Toast.LENGTH_LONG).show()
-        var list = AppDatabase.getDatabase(requireContext()).CategoryDao().getCategoriesWithNotes(user.userId)
+        var list = AppDatabase.getDatabase(requireContext()).CategoryDao().getCategoriesWithNotes()
         list.forEach {
 
             items.add(Item(0, it.category))
-            it.notes.forEach {
+            it.tasks.forEach {
                 items.add(Item(1, it))
             }
 
@@ -85,7 +84,7 @@ class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.on
             recyclerView.visibility = View.INVISIBLE
         }
 
-        recyclerView.layoutManager = GridLayoutManager(this, 1)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
         adapter = RecyclerAdapter(items, this, this)
         recyclerView.adapter = adapter
 
@@ -108,8 +107,8 @@ class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.on
                     var pos: Int = viewHolder.adapterPosition
 
                     if (items[pos].type == 1) {
-                        AppDatabase.getDatabase(application).NoteDao()
-                            .delete(items[pos].note_object as Note)
+                        AppDatabase.getDatabase(requireActivity().applicationContext).NoteDao()
+                            .delete(items[pos].note_object as Task)
                         items.removeAt(pos)
                         //adapter.deleteItem(pos)
 
@@ -125,16 +124,15 @@ class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.on
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
     }
-    override fun noteClick(note: Note) {
+    override fun noteClick(task: Task) {
 
      //   i.putExtra("note", note)
      //   i.putExtra("user", user)
-
-
+        findNavController().navigate(R.id.aboutNoteFragment)
     }
 
-    override fun changeCheck(note: Note) {
-        AppDatabase.getDatabase(this).NoteDao().insert(note)
+    override fun changeCheck(task: Task) {
+        AppDatabase.getDatabase(requireContext()).NoteDao().insert(task)
     }
 
 }

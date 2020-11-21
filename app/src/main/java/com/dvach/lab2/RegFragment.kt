@@ -61,7 +61,7 @@ class RegFragment : Fragment() {
                 ) {
 
                     user.email = emailText.text.toString();
-                    user.userName = nameText.text.toString();
+                    user.name = nameText.text.toString();
 
                     user.password = MD5Hash.toMD5Hash(passwordText.text.toString())
                     AppDatabase.getDatabase(requireContext()).userDao().insert(user)
