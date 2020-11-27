@@ -13,18 +13,24 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dvach.lab2.adapter.RecyclerAdapter
-import com.dvach.lab2.models.AppDatabase
-import com.dvach.lab2.models.Item
-import com.dvach.lab2.models.Task
+import com.dvach.lab2.models.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.onCheck {
 
     lateinit var sPref: SharedPreferences
-
+    var kaef: Boolean = false
     var flag = false
     lateinit var items: ArrayList<Item>
     lateinit var adapter: RecyclerAdapter
+    var categories:List<Category>? = null
+    var tasks:List<Task>? = null
+
+    var savedToken: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +51,8 @@ class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.on
         exitImage.setOnClickListener {
 
             sPref = requireActivity().getSharedPreferences("kek", Context.MODE_PRIVATE)
-            sPref.edit().remove("userEmail").apply();
-            sPref.edit().remove("userPassword").apply()
+            sPref.edit().remove("token").apply();
+
             startActivity(
                 Intent(
                     requireContext(),
@@ -58,19 +64,58 @@ class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.on
 
     override fun onResume() {
         super.onResume()
-        flag == true
+
         super.onResume()
         items = ArrayList<Item>()
+        loadText()
+        GlobalScope.launch(Dispatchers.Main) {
+            tasks = withContext(Dispatchers.IO) {
+                try {
+                    savedToken?.let { objRetrofit.createRetrofit().getAllTasks(it) }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
 
-        //   Toast.makeText(this,"sdas",Toast.LENGTH_LONG).show()
-        var list = AppDatabase.getDatabase(requireContext()).CategoryDao().getCategoriesWithNotes()
-        list.forEach {
-
-            items.add(Item(0, it.category))
-            it.tasks.forEach {
-                items.add(Item(1, it))
             }
+            if (tasks!=null) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    categories = withContext(Dispatchers.IO) {
+                        try {
+                            savedToken?.let { objRetrofit.createRetrofit().getAllCategories(it) }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
 
+                    }
+                    if (categories!=null) {
+                        flag = true
+                    }
+                    else {
+                        flag = false
+                        return@launch
+                    }
+                }
+            }
+            else {
+                flag = false
+                return@launch
+            }
+        }
+        if (!flag){
+            categories = AppDatabase.getDatabase(requireContext()).CategoryDao().getAllNames()
+            tasks = AppDatabase.getDatabase(requireContext()).NoteDao().getAllTitles()
+        }
+
+        categories?.forEach {
+            items.add(Item(0, it))
+            var category = it
+            tasks?.forEach{
+                if (it.category==category){
+                    items.add(Item(1, it))
+                }
+            }
         }
 
         if (items.size != 0) {
@@ -128,6 +173,8 @@ class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.on
 
      //   i.putExtra("note", note)
      //   i.putExtra("user", user)
+       // val action = HomeFragmen .actionMainFragmentToCatFragment("murrrr")
+       // navController?.navigate(action)
         findNavController().navigate(R.id.aboutNoteFragment)
     }
 
@@ -135,4 +182,13 @@ class HomeFragment : Fragment(), RecyclerAdapter.onItemClick, RecyclerAdapter.on
         AppDatabase.getDatabase(requireContext()).NoteDao().insert(task)
     }
 
+    fun loadText() {
+        sPref = requireActivity().getSharedPreferences("kek", Context.MODE_PRIVATE)
+        if (sPref.contains("token") ) {
+            savedToken = sPref.getString("token", "")
+            kaef = true
+            //   Toast.makeText(this, "Text loaded", Toast.LENGTH_SHORT).show()
+        }
+
+    }
 }

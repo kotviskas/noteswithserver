@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.dvach.lab2.models.Category
+import com.dvach.lab2.models.Priority
 import com.dvach.lab2.models.Task
 import kotlinx.android.synthetic.main.fragment_about_note.*
 
@@ -28,13 +30,12 @@ class AboutNoteFragment : Fragment() {
 
       //  val intent = intent
        // val note = intent.getSerializableExtra("note") as Note
-        val note = Task()
-
+        val note = Task("","",1,213, Category("",1),Priority(1,"sdsa","000000"),1,1,)
 
         noteNameTextView.text = note.title
-        categoryNameTextView.text = note.category
+        categoryNameTextView.text = note.category.toString()
         textTextView.text = note.description
-        if (note.check == false) {
+        if (note.done == 0) {
             checkTextView.text = getString(R.string.nedone)
             //checkTextView.setTextColor(getColor(R.color.redCard))
 
@@ -44,7 +45,7 @@ class AboutNoteFragment : Fragment() {
         }
         var str = "До " + note.done
         dateTextView.text = str
-        prioritetTextView.text = note.prioritet
+        prioritetTextView.text = note.priority.toString()
         changeImageView.setOnClickListener {
 
            // i.putExtra("note", note)

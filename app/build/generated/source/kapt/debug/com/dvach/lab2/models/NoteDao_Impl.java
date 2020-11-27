@@ -11,21 +11,23 @@ import androidx.sqlite.db.SupportSQLiteStatement;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class NoteDao_Impl implements NoteDao {
   private final RoomDatabase __db;
 
-  private final EntityInsertionAdapter<Task> __insertionAdapterOfNote;
+  private final EntityInsertionAdapter<Task> __insertionAdapterOfTask;
 
-  private final EntityDeletionOrUpdateAdapter<Task> __deletionAdapterOfNote;
+  private final EntityDeletionOrUpdateAdapter<Task> __deletionAdapterOfTask;
 
   public NoteDao_Impl(RoomDatabase __db) {
     this.__db = __db;
-    this.__insertionAdapterOfNote = new EntityInsertionAdapter<Task>(__db) {
+    this.__insertionAdapterOfTask = new EntityInsertionAdapter<Task>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR REPLACE INTO `Note` (`name`,`text`,`date`,`category`,`prioritet`,`check`,`color`,`id`) VALUES (?,?,?,?,?,?,?,nullif(?, 0))";
+        return "INSERT OR REPLACE INTO `Task` (`title`,`description`,`done`,`deadline`,`created`,`id`,`nameCategory`,`idCategory`,`idPriority`,`namePriority`,`color`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -40,32 +42,46 @@ public final class NoteDao_Impl implements NoteDao {
         } else {
           stmt.bindString(2, value.getDescription());
         }
-        if (value.getDone() == null) {
-          stmt.bindNull(3);
+        stmt.bindLong(3, value.getDone());
+        stmt.bindLong(4, value.getDeadline());
+        stmt.bindLong(5, value.getCreated());
+        stmt.bindLong(6, value.getId());
+        final Category _tmpCategory = value.getCategory();
+        if(_tmpCategory != null) {
+          if (_tmpCategory.getNameCategory() == null) {
+            stmt.bindNull(7);
+          } else {
+            stmt.bindString(7, _tmpCategory.getNameCategory());
+          }
+          stmt.bindLong(8, _tmpCategory.getIdCategory());
         } else {
-          stmt.bindString(3, value.getDone());
+          stmt.bindNull(7);
+          stmt.bindNull(8);
         }
-        if (value.getCategory() == null) {
-          stmt.bindNull(4);
+        final Priority _tmpPriority = value.getPriority();
+        if(_tmpPriority != null) {
+          stmt.bindLong(9, _tmpPriority.getIdPriority());
+          if (_tmpPriority.getNamePriority() == null) {
+            stmt.bindNull(10);
+          } else {
+            stmt.bindString(10, _tmpPriority.getNamePriority());
+          }
+          if (_tmpPriority.getColor() == null) {
+            stmt.bindNull(11);
+          } else {
+            stmt.bindString(11, _tmpPriority.getColor());
+          }
         } else {
-          stmt.bindString(4, value.getCategory());
+          stmt.bindNull(9);
+          stmt.bindNull(10);
+          stmt.bindNull(11);
         }
-        if (value.getPrioritet() == null) {
-          stmt.bindNull(5);
-        } else {
-          stmt.bindString(5, value.getPrioritet());
-        }
-        final int _tmp;
-        _tmp = value.getCheck() ? 1 : 0;
-        stmt.bindLong(6, _tmp);
-        stmt.bindLong(7, value.getColor());
-        stmt.bindLong(8, value.getId());
       }
     };
-    this.__deletionAdapterOfNote = new EntityDeletionOrUpdateAdapter<Task>(__db) {
+    this.__deletionAdapterOfTask = new EntityDeletionOrUpdateAdapter<Task>(__db) {
       @Override
       public String createQuery() {
-        return "DELETE FROM `Note` WHERE `id` = ?";
+        return "DELETE FROM `Task` WHERE `id` = ?";
       }
 
       @Override
@@ -80,7 +96,7 @@ public final class NoteDao_Impl implements NoteDao {
     __db.assertNotSuspendingTransaction();
     __db.beginTransaction();
     try {
-      __insertionAdapterOfNote.insert(task);
+      __insertionAdapterOfTask.insert(task);
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
@@ -92,7 +108,7 @@ public final class NoteDao_Impl implements NoteDao {
     __db.assertNotSuspendingTransaction();
     __db.beginTransaction();
     try {
-      __deletionAdapterOfNote.handle(task);
+      __deletionAdapterOfTask.handle(task);
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
@@ -101,50 +117,126 @@ public final class NoteDao_Impl implements NoteDao {
 
   @Override
   public Task getByName() {
-    final String _sql = "SELECT * FROM Note";
+    final String _sql = "SELECT * FROM Task";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {
-      final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
-      final int _cursorIndexOfText = CursorUtil.getColumnIndexOrThrow(_cursor, "text");
-      final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "date");
-      final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
-      final int _cursorIndexOfPrioritet = CursorUtil.getColumnIndexOrThrow(_cursor, "prioritet");
-      final int _cursorIndexOfCheck = CursorUtil.getColumnIndexOrThrow(_cursor, "check");
-      final int _cursorIndexOfColor = CursorUtil.getColumnIndexOrThrow(_cursor, "color");
+      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+      final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+      final int _cursorIndexOfDone = CursorUtil.getColumnIndexOrThrow(_cursor, "done");
+      final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+      final int _cursorIndexOfCreated = CursorUtil.getColumnIndexOrThrow(_cursor, "created");
       final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfNameCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "nameCategory");
+      final int _cursorIndexOfIdCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "idCategory");
+      final int _cursorIndexOfIdPriority = CursorUtil.getColumnIndexOrThrow(_cursor, "idPriority");
+      final int _cursorIndexOfNamePriority = CursorUtil.getColumnIndexOrThrow(_cursor, "namePriority");
+      final int _cursorIndexOfColor = CursorUtil.getColumnIndexOrThrow(_cursor, "color");
       final Task _result;
       if(_cursor.moveToFirst()) {
-        _result = new Task();
-        final String _tmpName;
-        _tmpName = _cursor.getString(_cursorIndexOfName);
-        _result.setTitle(_tmpName);
-        final String _tmpText;
-        _tmpText = _cursor.getString(_cursorIndexOfText);
-        _result.setDescription(_tmpText);
-        final String _tmpDate;
-        _tmpDate = _cursor.getString(_cursorIndexOfDate);
-        _result.setDone(_tmpDate);
-        final String _tmpCategory;
-        _tmpCategory = _cursor.getString(_cursorIndexOfCategory);
-        _result.setCategory(_tmpCategory);
-        final String _tmpPrioritet;
-        _tmpPrioritet = _cursor.getString(_cursorIndexOfPrioritet);
-        _result.setPrioritet(_tmpPrioritet);
-        final boolean _tmpCheck;
-        final int _tmp;
-        _tmp = _cursor.getInt(_cursorIndexOfCheck);
-        _tmpCheck = _tmp != 0;
-        _result.setCheck(_tmpCheck);
-        final int _tmpColor;
-        _tmpColor = _cursor.getInt(_cursorIndexOfColor);
-        _result.setColor(_tmpColor);
-        final long _tmpId;
-        _tmpId = _cursor.getLong(_cursorIndexOfId);
-        _result.setId(_tmpId);
+        final String _tmpTitle;
+        _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+        final String _tmpDescription;
+        _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+        final int _tmpDone;
+        _tmpDone = _cursor.getInt(_cursorIndexOfDone);
+        final int _tmpDeadline;
+        _tmpDeadline = _cursor.getInt(_cursorIndexOfDeadline);
+        final int _tmpCreated;
+        _tmpCreated = _cursor.getInt(_cursorIndexOfCreated);
+        final int _tmpId;
+        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        final Category _tmpCategory;
+        if (! (_cursor.isNull(_cursorIndexOfNameCategory) && _cursor.isNull(_cursorIndexOfIdCategory))) {
+          final String _tmpNameCategory;
+          _tmpNameCategory = _cursor.getString(_cursorIndexOfNameCategory);
+          final int _tmpIdCategory;
+          _tmpIdCategory = _cursor.getInt(_cursorIndexOfIdCategory);
+          _tmpCategory = new Category(_tmpNameCategory,_tmpIdCategory);
+        }  else  {
+          _tmpCategory = null;
+        }
+        final Priority _tmpPriority;
+        if (! (_cursor.isNull(_cursorIndexOfIdPriority) && _cursor.isNull(_cursorIndexOfNamePriority) && _cursor.isNull(_cursorIndexOfColor))) {
+          final int _tmpIdPriority;
+          _tmpIdPriority = _cursor.getInt(_cursorIndexOfIdPriority);
+          final String _tmpNamePriority;
+          _tmpNamePriority = _cursor.getString(_cursorIndexOfNamePriority);
+          final String _tmpColor;
+          _tmpColor = _cursor.getString(_cursorIndexOfColor);
+          _tmpPriority = new Priority(_tmpIdPriority,_tmpNamePriority,_tmpColor);
+        }  else  {
+          _tmpPriority = null;
+        }
+        _result = new Task(_tmpTitle,_tmpDescription,_tmpDone,_tmpDeadline,_tmpCategory,_tmpPriority,_tmpCreated,_tmpId);
       } else {
         _result = null;
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
+  public List<Task> getAllTitles() {
+    final String _sql = "SELECT * FROM Task";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+      final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+      final int _cursorIndexOfDone = CursorUtil.getColumnIndexOrThrow(_cursor, "done");
+      final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+      final int _cursorIndexOfCreated = CursorUtil.getColumnIndexOrThrow(_cursor, "created");
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfNameCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "nameCategory");
+      final int _cursorIndexOfIdCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "idCategory");
+      final int _cursorIndexOfIdPriority = CursorUtil.getColumnIndexOrThrow(_cursor, "idPriority");
+      final int _cursorIndexOfNamePriority = CursorUtil.getColumnIndexOrThrow(_cursor, "namePriority");
+      final int _cursorIndexOfColor = CursorUtil.getColumnIndexOrThrow(_cursor, "color");
+      final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
+      while(_cursor.moveToNext()) {
+        final Task _item;
+        final String _tmpTitle;
+        _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+        final String _tmpDescription;
+        _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+        final int _tmpDone;
+        _tmpDone = _cursor.getInt(_cursorIndexOfDone);
+        final int _tmpDeadline;
+        _tmpDeadline = _cursor.getInt(_cursorIndexOfDeadline);
+        final int _tmpCreated;
+        _tmpCreated = _cursor.getInt(_cursorIndexOfCreated);
+        final int _tmpId;
+        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        final Category _tmpCategory;
+        if (! (_cursor.isNull(_cursorIndexOfNameCategory) && _cursor.isNull(_cursorIndexOfIdCategory))) {
+          final String _tmpNameCategory;
+          _tmpNameCategory = _cursor.getString(_cursorIndexOfNameCategory);
+          final int _tmpIdCategory;
+          _tmpIdCategory = _cursor.getInt(_cursorIndexOfIdCategory);
+          _tmpCategory = new Category(_tmpNameCategory,_tmpIdCategory);
+        }  else  {
+          _tmpCategory = null;
+        }
+        final Priority _tmpPriority;
+        if (! (_cursor.isNull(_cursorIndexOfIdPriority) && _cursor.isNull(_cursorIndexOfNamePriority) && _cursor.isNull(_cursorIndexOfColor))) {
+          final int _tmpIdPriority;
+          _tmpIdPriority = _cursor.getInt(_cursorIndexOfIdPriority);
+          final String _tmpNamePriority;
+          _tmpNamePriority = _cursor.getString(_cursorIndexOfNamePriority);
+          final String _tmpColor;
+          _tmpColor = _cursor.getString(_cursorIndexOfColor);
+          _tmpPriority = new Priority(_tmpIdPriority,_tmpNamePriority,_tmpColor);
+        }  else  {
+          _tmpPriority = null;
+        }
+        _item = new Task(_tmpTitle,_tmpDescription,_tmpDone,_tmpDeadline,_tmpCategory,_tmpPriority,_tmpCreated,_tmpId);
+        _result.add(_item);
       }
       return _result;
     } finally {

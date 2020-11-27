@@ -17,7 +17,6 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.SuppressWarnings;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,18 +34,17 @@ public final class AppDatabase_Impl extends AppDatabase {
     final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `User` (`userName` TEXT, `email` TEXT, `password` TEXT, `userId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)");
-        _db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_User_email` ON `User` (`email`)");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `Note` (`name` TEXT NOT NULL, `text` TEXT NOT NULL, `date` TEXT NOT NULL, `category` TEXT NOT NULL, `prioritet` TEXT NOT NULL, `check` INTEGER NOT NULL, `color` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `Category` (`categoryName` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `User` (`name` TEXT NOT NULL, `email` TEXT NOT NULL, `api_token` TEXT NOT NULL, `userId` INTEGER NOT NULL, PRIMARY KEY(`userId`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `Task` (`title` TEXT NOT NULL, `description` TEXT NOT NULL, `done` INTEGER NOT NULL, `deadline` INTEGER NOT NULL, `created` INTEGER NOT NULL, `id` INTEGER NOT NULL, `nameCategory` TEXT NOT NULL, `idCategory` INTEGER NOT NULL, `idPriority` INTEGER NOT NULL, `namePriority` TEXT NOT NULL, `color` TEXT NOT NULL, PRIMARY KEY(`id`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `Category` (`nameCategory` TEXT NOT NULL, `idCategory` INTEGER NOT NULL, PRIMARY KEY(`idCategory`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7d26feba75d49d2b2c9243e9acecc010')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0739eada2dbb147312be3f205a158fd3')");
       }
 
       @Override
       public void dropAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("DROP TABLE IF EXISTS `User`");
-        _db.execSQL("DROP TABLE IF EXISTS `Note`");
+        _db.execSQL("DROP TABLE IF EXISTS `Task`");
         _db.execSQL("DROP TABLE IF EXISTS `Category`");
         if (mCallbacks != null) {
           for (int _i = 0, _size = mCallbacks.size(); _i < _size; _i++) {
@@ -87,13 +85,12 @@ public final class AppDatabase_Impl extends AppDatabase {
       @Override
       protected RoomOpenHelper.ValidationResult onValidateSchema(SupportSQLiteDatabase _db) {
         final HashMap<String, TableInfo.Column> _columnsUser = new HashMap<String, TableInfo.Column>(4);
-        _columnsUser.put("userName", new TableInfo.Column("userName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUser.put("email", new TableInfo.Column("email", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUser.put("password", new TableInfo.Column("password", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUser.put("name", new TableInfo.Column("name", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUser.put("email", new TableInfo.Column("email", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUser.put("api_token", new TableInfo.Column("api_token", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsUser.put("userId", new TableInfo.Column("userId", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysUser = new HashSet<TableInfo.ForeignKey>(0);
-        final HashSet<TableInfo.Index> _indicesUser = new HashSet<TableInfo.Index>(1);
-        _indicesUser.add(new TableInfo.Index("index_User_email", true, Arrays.asList("email")));
+        final HashSet<TableInfo.Index> _indicesUser = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoUser = new TableInfo("User", _columnsUser, _foreignKeysUser, _indicesUser);
         final TableInfo _existingUser = TableInfo.read(_db, "User");
         if (! _infoUser.equals(_existingUser)) {
@@ -101,27 +98,30 @@ public final class AppDatabase_Impl extends AppDatabase {
                   + " Expected:\n" + _infoUser + "\n"
                   + " Found:\n" + _existingUser);
         }
-        final HashMap<String, TableInfo.Column> _columnsNote = new HashMap<String, TableInfo.Column>(8);
-        _columnsNote.put("name", new TableInfo.Column("name", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsNote.put("text", new TableInfo.Column("text", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsNote.put("date", new TableInfo.Column("date", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsNote.put("category", new TableInfo.Column("category", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsNote.put("prioritet", new TableInfo.Column("prioritet", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsNote.put("check", new TableInfo.Column("check", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsNote.put("color", new TableInfo.Column("color", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsNote.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        final HashSet<TableInfo.ForeignKey> _foreignKeysNote = new HashSet<TableInfo.ForeignKey>(0);
-        final HashSet<TableInfo.Index> _indicesNote = new HashSet<TableInfo.Index>(0);
-        final TableInfo _infoNote = new TableInfo("Note", _columnsNote, _foreignKeysNote, _indicesNote);
-        final TableInfo _existingNote = TableInfo.read(_db, "Note");
-        if (! _infoNote.equals(_existingNote)) {
-          return new RoomOpenHelper.ValidationResult(false, "Note(com.dvach.lab2.models.Note).\n"
-                  + " Expected:\n" + _infoNote + "\n"
-                  + " Found:\n" + _existingNote);
+        final HashMap<String, TableInfo.Column> _columnsTask = new HashMap<String, TableInfo.Column>(11);
+        _columnsTask.put("title", new TableInfo.Column("title", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("description", new TableInfo.Column("description", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("done", new TableInfo.Column("done", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("deadline", new TableInfo.Column("deadline", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("created", new TableInfo.Column("created", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("nameCategory", new TableInfo.Column("nameCategory", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("idCategory", new TableInfo.Column("idCategory", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("idPriority", new TableInfo.Column("idPriority", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("namePriority", new TableInfo.Column("namePriority", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTask.put("color", new TableInfo.Column("color", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysTask = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesTask = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoTask = new TableInfo("Task", _columnsTask, _foreignKeysTask, _indicesTask);
+        final TableInfo _existingTask = TableInfo.read(_db, "Task");
+        if (! _infoTask.equals(_existingTask)) {
+          return new RoomOpenHelper.ValidationResult(false, "Task(com.dvach.lab2.models.Task).\n"
+                  + " Expected:\n" + _infoTask + "\n"
+                  + " Found:\n" + _existingTask);
         }
         final HashMap<String, TableInfo.Column> _columnsCategory = new HashMap<String, TableInfo.Column>(2);
-        _columnsCategory.put("categoryName", new TableInfo.Column("categoryName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCategory.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsCategory.put("nameCategory", new TableInfo.Column("nameCategory", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsCategory.put("idCategory", new TableInfo.Column("idCategory", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysCategory = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesCategory = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoCategory = new TableInfo("Category", _columnsCategory, _foreignKeysCategory, _indicesCategory);
@@ -133,7 +133,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "7d26feba75d49d2b2c9243e9acecc010", "1986f1d43fc6ecf4f8b1748ae57a8e76");
+    }, "0739eada2dbb147312be3f205a158fd3", "078ba4514a4f9571bfa2b9f95d726f1c");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
@@ -146,7 +146,7 @@ public final class AppDatabase_Impl extends AppDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "User","Note","Category");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "User","Task","Category");
   }
 
   @Override
@@ -156,7 +156,7 @@ public final class AppDatabase_Impl extends AppDatabase {
     try {
       super.beginTransaction();
       _db.execSQL("DELETE FROM `User`");
-      _db.execSQL("DELETE FROM `Note`");
+      _db.execSQL("DELETE FROM `Task`");
       _db.execSQL("DELETE FROM `Category`");
       super.setTransactionSuccessful();
     } finally {

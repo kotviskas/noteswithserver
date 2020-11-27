@@ -37,10 +37,10 @@ class RecyclerAdapter(
 
         fun SetNote(task: Task) {
             headText.setText(task.title);
-            textText.setText(task.category);
-            checkBox.isChecked = task.check
+            textText.setText(task.category.nameCategory);
+            checkBox.isChecked = task.done==1
 
-            itemView.cardView.setCardBackgroundColor(task.color)
+         //   itemView.cardView.setCardBackgroundColor(task.color)
 
         }
 
@@ -51,7 +51,7 @@ class RecyclerAdapter(
         var headText = itemView.findViewById<TextView>(R.id.mainTextView2)
 
         fun SetText(category: Category) {
-            headText.setText(category.name);
+            headText.setText(category.nameCategory);
         }
     }
 
@@ -95,8 +95,8 @@ class RecyclerAdapter(
 
             }
             holder.itemView.checkBox.setOnClickListener {
-                (listItems[position].note_object as Task).check =
-                    !(listItems[position].note_object as Task).check
+                if ((listItems[position].note_object as Task).done == 0) (listItems[position].note_object as Task).done = 1
+                else (listItems[position].note_object as Task).done = 0
                 listener2.changeCheck((listItems[position].note_object as Task))
             }
         }

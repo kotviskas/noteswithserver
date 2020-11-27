@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.dvach.lab2.adapter.InputValidation
 import com.dvach.lab2.models.AppDatabase
 import com.dvach.lab2.models.Category
+import com.dvach.lab2.models.Priority
 import com.dvach.lab2.models.Task
 import kotlinx.android.synthetic.main.dialog_layout.view.*
 import kotlinx.android.synthetic.main.fragment_create_note.*
@@ -21,7 +22,7 @@ import kotlin.collections.ArrayList
 
 
 class CreateNoteFragment : Fragment() {
-    var note = Task()
+    var note = Task("","",1,213, Category("",1), Priority(1,"sdsa","000000"),1,1,)
     var kaef: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +38,7 @@ class CreateNoteFragment : Fragment() {
 
 
         var list2 = ArrayList<String>(Arrays.asList(*resources.getStringArray(R.array.prioritet)))
-        var category = Category()
+        var category = Category("dsa",1)
 
         var categoryList: ArrayList<String> =
             AppDatabase.getDatabase(requireContext()).CategoryDao()
@@ -132,9 +133,9 @@ class CreateNoteFragment : Fragment() {
 
             dialog.saveTextView.setOnClickListener {
                 alertDialog.dismiss()
-                category.name = dialog.addCategoryEditText.text.toString()
+                category.nameCategory = dialog.addCategoryEditText.text.toString()
                 AppDatabase.getDatabase(requireContext()).CategoryDao().insert(category)
-                categoryList.add(category.name)
+                categoryList.add(category.nameCategory)
                 if (categoryList[0] == "Категория задачи") {
                     categoryList.removeAt(0)
                     adapter2.notifyDataSetChanged();
@@ -170,11 +171,11 @@ class CreateNoteFragment : Fragment() {
                 lottieAnimationView.playAnimation()
                 note.title = nameEditText.text.toString()
                 note.description = noteTextEditText.text.toString()
-                note.done = dateEditText.text.toString()
-                note.prioritet = spinner.selectedItem.toString()
-                note.category = spinner2.selectedItem.toString()
+               // note.deadline = dateEditText.text.toString()
+                note.priority = spinner.selectedItem as Priority
+                note.category = spinner2.selectedItem as Category
 
-                if (note.prioritet == "Срочно") {
+             /*   if (note.priority == "Срочно") {
                     note.color = resources.getColor(R.color.redCard)
                 }
                 if (note.prioritet == "Важно") {
@@ -185,7 +186,7 @@ class CreateNoteFragment : Fragment() {
                 }
                 if (note.prioritet == "Пофиг") {
                     note.color = resources.getColor(R.color.blueCard)
-                }
+                }*/
 
                 AppDatabase.getDatabase(requireContext()).NoteDao().insert(note)
                 findNavController().popBackStack()

@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.dvach.lab2.adapter.InputValidation
-import com.dvach.lab2.models.AppDatabase
-import com.dvach.lab2.models.MD5Hash
-import com.dvach.lab2.models.User
+import com.dvach.lab2.models.*
 import kotlinx.android.synthetic.main.fragment_reg.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RegFragment : Fragment() {
     lateinit var sPref: SharedPreferences
@@ -25,9 +27,10 @@ class RegFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_reg, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var user = User()
+
 
         addUserBtn.setOnClickListener {
             if (AppDatabase.getDatabase(requireContext()).userDao()
@@ -59,18 +62,32 @@ class RegFragment : Fragment() {
                         "Пароли не совпадают"
                     )
                 ) {
+                    var form = UserRegistrationForm(
+                        emailText.text.toString(),
+                        nameText.text.toString(),
+                        passwordText.text.toString()
+                    )
 
-                    user.email = emailText.text.toString();
-                    user.name = nameText.text.toString();
+                    GlobalScope.launch(Dispatchers.Main) {
+                        val user = withContext(Dispatchers.IO) {
+                            try {
+                                objRetrofit.createRetrofit().registerUser(form)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                null
+                            }
 
-                    user.password = MD5Hash.toMD5Hash(passwordText.text.toString())
-                    AppDatabase.getDatabase(requireContext()).userDao().insert(user)
-                    user = AppDatabase.getDatabase(requireContext()).userDao().getUserByEmail(user.email!!)!!
-                    saveText()
+                        }
+                        if (user!=null) saveText(user.api_token)
+                        else return@launch
+                    }
+
+
                     val i = Intent(requireContext(), MainActivity::class.java)
-                    i.putExtra("user", user)
+
                     startActivity(i)
                 }
+
             }
         }
 
@@ -79,11 +96,10 @@ class RegFragment : Fragment() {
         }
     }
 
-    fun saveText() {
+    fun saveText(token: String) {
         sPref = requireActivity().getSharedPreferences("kek", Context.MODE_PRIVATE)
         val ed: SharedPreferences.Editor = sPref.edit()
-        ed.putString("userEmail", emailText.text.toString())
-        ed.putString("userPassword", passwordText.text.toString())
+        ed.putString("token", token)
         ed.apply()
         //Toast.makeText(this, "Text saved", Toast.LENGTH_SHORT).show()
     }

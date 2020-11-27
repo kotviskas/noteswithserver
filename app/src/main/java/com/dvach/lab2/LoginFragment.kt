@@ -13,8 +13,14 @@ import androidx.navigation.fragment.findNavController
 import com.dvach.lab2.adapter.InputValidation
 import com.dvach.lab2.models.AppDatabase
 import com.dvach.lab2.models.MD5Hash
+import com.dvach.lab2.models.UserLoginForm
+import com.dvach.lab2.models.objRetrofit
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginFragment : Fragment() {
     lateinit var sPref: SharedPreferences
@@ -44,17 +50,25 @@ class LoginFragment : Fragment() {
                     "Введите пароль"
                 )
             ) {
-                var user = AppDatabase.getDatabase(requireContext()).userDao()
-                    .getUser(
-                        emailText.text.toString(),
-                        MD5Hash.toMD5Hash(passwordText.text.toString())
-                    )
-                if (user != null
-                ) {
-                    saveText()
-                    val i = Intent(requireContext(), MainActivity::class.java)
-                    i.putExtra("user", user)
-                    startActivity(i)
+
+                var form=UserLoginForm(emailText.text.toString(),passwordText.text.toString())
+
+                GlobalScope.launch(Dispatchers.Main) {
+                    val user = withContext(Dispatchers.IO) {
+                        try {
+                            objRetrofit.createRetrofit().loginUser(form)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+
+                    }
+                    if (user!=null) {
+                        saveText(user.api_token)
+                        val i = Intent(requireContext(), MainActivity::class.java)
+                        startActivity(i)
+                    }
+                    else return@launch
                 }
             }
 
@@ -64,11 +78,10 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun saveText() {
+    fun saveText(token: String) {
         sPref = requireActivity().getSharedPreferences("kek", Context.MODE_PRIVATE)
         val ed: SharedPreferences.Editor = sPref.edit()
-        ed.putString("userEmail", emailText.text.toString())
-        ed.putString("userPassword", MD5Hash.toMD5Hash(passwordText.text.toString()))
+        ed.putString("token", token)
         ed.apply()
         //Toast.makeText(this, "Text saved", Toast.LENGTH_SHORT).show()
     }

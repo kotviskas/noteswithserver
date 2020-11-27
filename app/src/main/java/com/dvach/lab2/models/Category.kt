@@ -2,30 +2,30 @@ package com.dvach.lab2.models
 
 
 import androidx.room.*
+import com.google.gson.annotations.SerializedName
 
 
 @Entity
 data class Category (
 
-    val name: String,
+    @SerializedName("name")
+    var nameCategory: String,
     @PrimaryKey
-    val id: Int
+    @SerializedName("id")
+    val idCategory: Int
 )
 
 @Dao
 interface CategoryDao {
-    @Query("SELECT * FROM Category WHERE name = :name")
+    @Query("SELECT * FROM Category WHERE nameCategory = :name")
     fun getByName(name: String): Category?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(category: Category?)
 
-    @Query("SELECT name FROM Category")
-    fun getAllNames(): List<String>
-
-    @Transaction
     @Query("SELECT * FROM Category")
-    fun getCategoriesWithNotes(): List<CategoryWithNotes>
+    fun getAllNames(): List<Category>
+
 
     @Delete
     fun delete(category: Category)

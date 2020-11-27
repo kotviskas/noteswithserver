@@ -9,12 +9,14 @@ import java.io.Serializable
 @Entity
 data class Task  (
 
-    val title: String,
-    val description: String,
-    val done: Int,
+    var title: String,
+    var description: String,
+    var done: Int,
     val deadline: Int,
-    val category: Category,
-    val priority: Priority,
+    @Embedded
+    var category: Category,
+    @Embedded
+    var priority: Priority,
     val created: Int,
 
     @PrimaryKey
@@ -25,6 +27,9 @@ data class Task  (
 interface NoteDao {
     @Query("SELECT * FROM Task")
     fun getByName(): Task?
+
+    @Query("SELECT * FROM Task")
+    fun getAllTitles(): List<Task>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(task: Task)
