@@ -5,8 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.dvach.lab2.models.AppDatabase
-import com.dvach.lab2.models.User
 
 
 class SplashActivity : AppCompatActivity() {

@@ -1,4 +1,5 @@
 package com.dvach.lab2.models
+import com.dvach.lab2.pojo.*
 import retrofit2.http.*
 
 interface RepoApi {
@@ -25,7 +26,7 @@ interface RepoApi {
     suspend fun createCategory(@Header("Authorization") token: String, @Body form: CategoryForm): Category
 
     @PATCH("task/{id}")
-    suspend fun updateTask(@Header("Authorization") token:String, @Path ("id") id: Int, @Body form: TaskForm):Task
+    suspend fun updateTask(@Header("Authorization") token:String, @Path ("id") id: Int, @Body form: TaskForm): Task
 
     @DELETE("tasks/{id}")
     suspend fun deleteTask(@Header("Authorization") token: String,@Path ("id") id: Int)

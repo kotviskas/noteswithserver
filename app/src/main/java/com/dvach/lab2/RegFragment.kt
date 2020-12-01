@@ -9,8 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.dvach.lab2.adapter.InputValidation
+import com.dvach.lab2.recyclerAdapter.InputValidation
 import com.dvach.lab2.models.*
+import com.dvach.lab2.pojo.UserRegistrationForm
 import kotlinx.android.synthetic.main.fragment_reg.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

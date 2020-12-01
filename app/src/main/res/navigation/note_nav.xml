@@ -25,6 +25,11 @@
         <action
             android:id="@+id/action_createNoteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="arg_note"
+            app:argType="com.dvach.lab2.pojo.Task"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/aboutNoteFragment"
@@ -37,5 +42,8 @@
         <action
             android:id="@+id/action_aboutNoteFragment_to_createNoteFragment"
             app:destination="@id/createNoteFragment" />
+        <argument
+            android:name="arg_note"
+            app:argType="com.dvach.lab2.pojo.Task" />
     </fragment>
 </navigation>

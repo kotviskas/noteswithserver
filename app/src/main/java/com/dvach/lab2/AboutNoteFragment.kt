@@ -6,20 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.dvach.lab2.models.Category
-import com.dvach.lab2.models.Priority
-import com.dvach.lab2.models.Task
+import com.dvach.lab2.pojo.Category
+import com.dvach.lab2.pojo.Priority
+import com.dvach.lab2.pojo.Task
 import kotlinx.android.synthetic.main.fragment_about_note.*
+import java.util.*
 
 
 class AboutNoteFragment : Fragment() {
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about_note, container, false)
     }
 
@@ -28,14 +27,15 @@ class AboutNoteFragment : Fragment() {
 
         backImg.setOnClickListener { findNavController().popBackStack() }
 
-      //  val intent = intent
-       // val note = intent.getSerializableExtra("note") as Note
-        val note = Task("","",1,213, Category("",1),Priority(1,"sdsa","000000"),1,1,)
+        var note:Task?=null
+        arguments?.let{
+           note=AboutNoteFragmentArgs.fromBundle(it).argNote
+        }
 
-        noteNameTextView.text = note.title
-        categoryNameTextView.text = note.category.toString()
-        textTextView.text = note.description
-        if (note.done == 0) {
+        noteNameTextView.text = note?.title
+        categoryNameTextView.text = note?.category.toString()
+        textTextView.text = note?.description
+        if (note?.done == 0) {
             checkTextView.text = getString(R.string.nedone)
             //checkTextView.setTextColor(getColor(R.color.redCard))
 
@@ -43,15 +43,15 @@ class AboutNoteFragment : Fragment() {
             checkTextView.text = getString(R.string.done)
             //checkTextView.setTextColor(getColor(R.color.greenCard))
         }
-        var str = "До " + note.done
+        var str = "До " + Date(note?.deadline!!*1000 )
+
         dateTextView.text = str
-        prioritetTextView.text = note.priority.toString()
+        prioritetTextView.text = note?.priority.toString()
+
         changeImageView.setOnClickListener {
-
            // i.putExtra("note", note)
-           // i.putExtra("user", user)
-
-            findNavController().navigate(R.id.createNoteFragment)
+            val action = AboutNoteFragmentDirections.actionAboutNoteFragmentToCreateNoteFragment(note)
+            findNavController().navigate(action)
             findNavController().popBackStack()
 
         }

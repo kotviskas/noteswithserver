@@ -8,15 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.dvach.lab2.adapter.InputValidation
-import com.dvach.lab2.models.AppDatabase
-import com.dvach.lab2.models.MD5Hash
-import com.dvach.lab2.models.UserLoginForm
+import com.dvach.lab2.recyclerAdapter.InputValidation
+import com.dvach.lab2.pojo.UserLoginForm
 import com.dvach.lab2.models.objRetrofit
 import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -51,7 +47,10 @@ class LoginFragment : Fragment() {
                 )
             ) {
 
-                var form=UserLoginForm(emailText.text.toString(),passwordText.text.toString())
+                var form= UserLoginForm(
+                    emailText.text.toString(),
+                    passwordText.text.toString()
+                )
 
                 GlobalScope.launch(Dispatchers.Main) {
                     val user = withContext(Dispatchers.IO) {

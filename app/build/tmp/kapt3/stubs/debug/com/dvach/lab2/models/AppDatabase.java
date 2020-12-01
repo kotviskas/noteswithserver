@@ -2,20 +2,20 @@ package com.dvach.lab2.models;
 
 import java.lang.System;
 
-@androidx.room.Database(entities = {com.dvach.lab2.models.User.class, com.dvach.lab2.models.Task.class, com.dvach.lab2.models.Category.class}, version = 1)
-@kotlin.Metadata(mv = {1, 4, 0}, bv = {1, 0, 3}, k = 1, d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\b\'\u0018\u0000 \t2\u00020\u0001:\u0001\tB\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\u0003\u001a\u00020\u0004H&J\b\u0010\u0005\u001a\u00020\u0006H&J\b\u0010\u0007\u001a\u00020\bH&\u00a8\u0006\n"}, d2 = {"Lcom/dvach/lab2/models/AppDatabase;", "Landroidx/room/RoomDatabase;", "()V", "CategoryDao", "Lcom/dvach/lab2/models/CategoryDao;", "NoteDao", "Lcom/dvach/lab2/models/NoteDao;", "userDao", "Lcom/dvach/lab2/models/UserDao;", "Companion", "app_debug"})
+@androidx.room.Database(entities = {com.dvach.lab2.pojo.User.class, com.dvach.lab2.pojo.Task.class, com.dvach.lab2.pojo.Category.class}, version = 1)
+@kotlin.Metadata(mv = {1, 4, 0}, bv = {1, 0, 3}, k = 1, d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\b\'\u0018\u0000 \t2\u00020\u0001:\u0001\tB\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\u0003\u001a\u00020\u0004H&J\b\u0010\u0005\u001a\u00020\u0006H&J\b\u0010\u0007\u001a\u00020\bH&\u00a8\u0006\n"}, d2 = {"Lcom/dvach/lab2/models/AppDatabase;", "Landroidx/room/RoomDatabase;", "()V", "CategoryDao", "Lcom/dvach/lab2/pojo/CategoryDao;", "NoteDao", "Lcom/dvach/lab2/pojo/NoteDao;", "userDao", "Lcom/dvach/lab2/pojo/UserDao;", "Companion", "app_debug"})
 public abstract class AppDatabase extends androidx.room.RoomDatabase {
     private static volatile com.dvach.lab2.models.AppDatabase INSTANCE;
     public static final com.dvach.lab2.models.AppDatabase.Companion Companion = null;
     
     @org.jetbrains.annotations.NotNull()
-    public abstract com.dvach.lab2.models.UserDao userDao();
+    public abstract com.dvach.lab2.pojo.UserDao userDao();
     
     @org.jetbrains.annotations.NotNull()
-    public abstract com.dvach.lab2.models.NoteDao NoteDao();
+    public abstract com.dvach.lab2.pojo.NoteDao NoteDao();
     
     @org.jetbrains.annotations.NotNull()
-    public abstract com.dvach.lab2.models.CategoryDao CategoryDao();
+    public abstract com.dvach.lab2.pojo.CategoryDao CategoryDao();
     
     public AppDatabase() {
         super();

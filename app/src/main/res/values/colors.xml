@@ -6,11 +6,11 @@
 
     <color name="basicBlack">#000000</color>
     <color name="hintColor54">#8A000000</color>
-    <color name="greenCard">#52CC57</color>
+    <color name="greenCard">#2E9C14</color>
     <color name="greenCheck">#69B76C</color>
-    <color name="yellowCard">#FFD130</color>
-    <color name="redCard">#FF685C</color>
-    <color name="blueCard">#6579EA</color>
+    <color name="yellowCard">#EF8D09</color>
+    <color name="redCard">#E7004D</color>
+    <color name="blueCard">#45D3EB</color>
     <color name="toolBarColor">#DE000000</color>
     <color name="grayText">#6C6C6C</color>
     <color name="white">#FFFFFF</color>

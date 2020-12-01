@@ -14,6 +14,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import androidx.sqlite.db.SupportSQLiteOpenHelper.Callback;
 import androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration;
+import com.dvach.lab2.pojo.CategoryDao;
+import com.dvach.lab2.pojo.CategoryDao_Impl;
+import com.dvach.lab2.pojo.NoteDao;
+import com.dvach.lab2.pojo.NoteDao_Impl;
+import com.dvach.lab2.pojo.UserDao;
+import com.dvach.lab2.pojo.UserDao_Impl;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.SuppressWarnings;
@@ -94,7 +100,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         final TableInfo _infoUser = new TableInfo("User", _columnsUser, _foreignKeysUser, _indicesUser);
         final TableInfo _existingUser = TableInfo.read(_db, "User");
         if (! _infoUser.equals(_existingUser)) {
-          return new RoomOpenHelper.ValidationResult(false, "User(com.dvach.lab2.models.User).\n"
+          return new RoomOpenHelper.ValidationResult(false, "User(com.dvach.lab2.pojo.User).\n"
                   + " Expected:\n" + _infoUser + "\n"
                   + " Found:\n" + _existingUser);
         }
@@ -115,7 +121,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         final TableInfo _infoTask = new TableInfo("Task", _columnsTask, _foreignKeysTask, _indicesTask);
         final TableInfo _existingTask = TableInfo.read(_db, "Task");
         if (! _infoTask.equals(_existingTask)) {
-          return new RoomOpenHelper.ValidationResult(false, "Task(com.dvach.lab2.models.Task).\n"
+          return new RoomOpenHelper.ValidationResult(false, "Task(com.dvach.lab2.pojo.Task).\n"
                   + " Expected:\n" + _infoTask + "\n"
                   + " Found:\n" + _existingTask);
         }
@@ -127,7 +133,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         final TableInfo _infoCategory = new TableInfo("Category", _columnsCategory, _foreignKeysCategory, _indicesCategory);
         final TableInfo _existingCategory = TableInfo.read(_db, "Category");
         if (! _infoCategory.equals(_existingCategory)) {
-          return new RoomOpenHelper.ValidationResult(false, "Category(com.dvach.lab2.models.Category).\n"
+          return new RoomOpenHelper.ValidationResult(false, "Category(com.dvach.lab2.pojo.Category).\n"
                   + " Expected:\n" + _infoCategory + "\n"
                   + " Found:\n" + _existingCategory);
         }

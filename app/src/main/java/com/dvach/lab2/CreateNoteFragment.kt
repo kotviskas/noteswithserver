@@ -1,6 +1,9 @@
 package com.dvach.lab2
 
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,20 +13,45 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
-import com.dvach.lab2.adapter.InputValidation
+import com.dvach.lab2.recyclerAdapter.InputValidation
 import com.dvach.lab2.models.AppDatabase
-import com.dvach.lab2.models.Category
-import com.dvach.lab2.models.Priority
-import com.dvach.lab2.models.Task
+import com.dvach.lab2.models.objRetrofit
+import com.dvach.lab2.pojo.*
 import kotlinx.android.synthetic.main.dialog_layout.view.*
 import kotlinx.android.synthetic.main.fragment_create_note.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class CreateNoteFragment : Fragment() {
-    var note = Task("","",1,213, Category("",1), Priority(1,"sdsa","000000"),1,1,)
     var kaef: Boolean = false
+    lateinit var sPref: SharedPreferences
+    var savedToken: String? = null
+    var kaef2: Boolean = false
+    var priorityList: ArrayList<Priority>? = ArrayList()
+    var priorityNames: ArrayList<String> = ArrayList()
+    var categoryList: ArrayList<Category>? = ArrayList()
+    var categoryNames: ArrayList<String> = ArrayList()
+    lateinit var adapter: ArrayAdapter<String>
+    lateinit var adapter2: ArrayAdapter<String>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.spinnertext, priorityNames!!
+        )
+
+        adapter2 = ArrayAdapter<String>(
+            requireContext(), R.layout.spinnertext, categoryNames!!
+        )
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,78 +64,158 @@ class CreateNoteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         lottieAnimationView.playAnimation()
 
-
-        var list2 = ArrayList<String>(Arrays.asList(*resources.getStringArray(R.array.prioritet)))
-        var category = Category("dsa",1)
-
-        var categoryList: ArrayList<String> =
-            AppDatabase.getDatabase(requireContext()).CategoryDao()
-                .getAllNames() as ArrayList<String>
-        if (categoryList.size == 0) {
-            categoryList.add("Категория задачи")
-        }
-       // val intent = intent
-       /* if (intent.hasExtra("note")) {
-            note = intent.getSerializableExtra("note") as Note
-            nameEditText.setText(note.name)
-            noteTextEditText.setText(note.text)
-            dateEditText.setText(note.date)
-            kaef = true
-            var flag: Int = 0
-            var index: Int = 0
-            list2.forEach {
-                if (list2[flag] == note.prioritet) {
-                    index = flag
-                }
-                flag++
-            }
-            var str: String = list2[0]
-            list2[index] = str
-            list2[0] = note.prioritet
-
-            flag = 0
-            index = 0
-            categoryList.forEach {
-                if (categoryList[flag] == note.category) {
-                    index = flag
-                }
-                flag++
-            }
-            str = categoryList[0]
-            categoryList[index] = str
-            categoryList[0] = note.category
-
-        }*/
-
-
-        var spinner: Spinner = prioritetSpinner
-        var adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-            requireContext(),
-            R.layout.spinnertext, list2
-        )
         adapter.setDropDownViewResource(R.layout.spinnertext)
-        spinner.adapter = adapter
+        prioritetSpinner.adapter = adapter
 
-        var spinner2: Spinner = categorySpinner
 
-        val adapter2: ArrayAdapter<String> = ArrayAdapter<String>(
-            requireContext(), R.layout.spinnertext, categoryList
+        loadText()
+        var note: Task? = null
+        arguments?.let {
+            note = CreateNoteFragmentArgs.fromBundle(it).argNote
+            kaef2=true
+        }
+
+        priorityList?.add(
+            Priority(
+                0,
+                "Importantt",
+                resources.getColor(R.color.redCard).toString()
+            )
         )
+        priorityNames.add("Importantt")
+        adapter.notifyDataSetChanged()
+
+        GlobalScope.launch(Dispatchers.Main) {
+            priorityList = withContext(Dispatchers.IO) {
+                try {
+                    savedToken?.let {
+                        objRetrofit.createRetrofit().getAllPriorities("Bearer " + it)
+                    } as ArrayList<Priority>
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
+
+            }
+            if (priorityList == null) {
+                priorityList = ArrayList()
+                priorityList?.add(
+                    Priority(
+                        3,
+                        "Very important",
+                        resources.getColor(R.color.yellowCard).toString()
+                    )
+                )
+                priorityList?.add(
+                    Priority(
+                        4,
+                        "Not important",
+                        resources.getColor(R.color.greenCard).toString()
+                    )
+                )
+                priorityList?.add(
+                    Priority(
+                        5,
+                        "May be never",
+                        resources.getColor(R.color.blueCard).toString()
+                    )
+                )
+            }
+
+            if (priorityNames[0] == "Importantt") {
+                priorityNames.removeAt(0)
+            }
+
+            priorityList?.forEach {
+                priorityNames.add(it.namePriority)
+            }
+
+            if (note != null) {
+                var flag: Int = 0
+                var index: Int = 0
+                priorityNames.forEach {
+                    if (priorityNames[flag] == note?.priority?.namePriority) {
+                        index = flag
+                    }
+                    flag++
+                }
+                var str: String = priorityNames[0]
+                priorityNames[index] = str
+                priorityNames[0] = note?.priority!!.namePriority
+            }
+            adapter.notifyDataSetChanged()
+        }
+
+
+        var category: Category? = null
+
+        categoryList?.add(Category("Категория задачи", 0))
+        categoryNames.add("Категория задачи")
+
 
         adapter2.setDropDownViewResource(R.layout.spinnertext)
-        spinner2.adapter = adapter2
+        categorySpinner.adapter = adapter2
 
-        if (kaef == true) {
-            var list2: ArrayList<String>
+        GlobalScope.launch(Dispatchers.Main) {
+            categoryList = withContext(Dispatchers.IO) {
+                try {
+                    savedToken?.let {
+                        objRetrofit.createRetrofit().getAllCategories("Bearer " + it)
+                    } as ArrayList<Category>?
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
 
+            }
+            if (categoryList == null) {
+                categoryList = AppDatabase.getDatabase(requireContext()).CategoryDao()
+                    .getAllNames() as ArrayList<Category>?
+                return@launch
+            }
+            categoryList?.forEach {
+                categoryNames.add(it.nameCategory)
+            }
+            if (categoryNames.size == 0) {
+                categoryNames.add("Категория задачи")
+            } else {
+                if (categoryNames[0] == "Категория задачи") {
+                    categoryNames.removeAt(0)
+                }
+                if (note != null) {
+                    var flag = 0
+                    var index = 0
+                    categoryNames.forEach {
+                        if (categoryNames[flag] == note?.category?.nameCategory) {
+                            index = flag
+                        }
+                        flag++
+                    }
+                    var ctr = categoryNames[0]
+                    categoryNames[index] = ctr
+                    categoryNames[0] = note?.category!!.nameCategory
+                }
+            }
+
+            adapter2.notifyDataSetChanged()
         }
+
+        nameEditText.setText(note?.title)
+        noteTextEditText.setText(note?.description)
+        if (note != null) {
+            var str = "До " + Date(note?.deadline!! * 1000)
+            dateEditText.setText(str)
+        }
+
+
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
+        var date: Date? = null
         addDate.setOnClickListener {
-
             val dpd = DatePickerDialog(
                 requireContext(),
                 DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -119,34 +227,57 @@ class CreateNoteFragment : Fragment() {
                 day
             )
             dpd.show()
-
-
+            date = c.time
         }
 
         addCategory.setOnClickListener {
-
             val dialog = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_layout, null)
-
             val builder = AlertDialog.Builder(requireContext())
                 .setView(dialog)
             val alertDialog = builder.show()
 
             dialog.saveTextView.setOnClickListener {
                 alertDialog.dismiss()
-                category.nameCategory = dialog.addCategoryEditText.text.toString()
-                AppDatabase.getDatabase(requireContext()).CategoryDao().insert(category)
-                categoryList.add(category.nameCategory)
-                if (categoryList[0] == "Категория задачи") {
-                    categoryList.removeAt(0)
-                    adapter2.notifyDataSetChanged();
+                category?.nameCategory = dialog.addCategoryEditText.text.toString()
+
+                if (category != null) {
+                    categoryList?.add(category)
+                    categoryNames.add(category.nameCategory)
+
+                    if (categoryNames[0] == "Категория задачи") {
+                        categoryNames.removeAt(0)
+                        adapter2.notifyDataSetChanged();
+                    }
                 }
 
+                GlobalScope.launch(Dispatchers.Main) {
+                    var category1 = withContext(Dispatchers.IO) {
+                        try {
+                            savedToken?.let {
+                                objRetrofit.createRetrofit().createCategory(
+                                    "Bearer " +it,
+                                    CategoryForm(category!!.nameCategory)
+                                )
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+
+                    }
+
+                    AppDatabase.getDatabase(requireContext()).CategoryDao().insert(category)
+                    return@launch
+
+                }
                 adapter2.notifyDataSetChanged();
             }
 
             dialog.cancelTextView.setOnClickListener {
                 alertDialog.dismiss()
             }
+
+
         }
 
         backImg.setOnClickListener { findNavController().popBackStack() }
@@ -163,38 +294,109 @@ class CreateNoteFragment : Fragment() {
                     "Добавьте описание"
                 )
                 && validation.isSpinnerFilled(
-                    spinner2,
+                    categorySpinner,
                     ""
-                ) && spinner2.selectedItem.toString() != "Категория задачи"
+                ) && categorySpinner.selectedItem.toString() != "Категория задачи"
             ) {
                 lottieLayout.visibility = View.VISIBLE
                 lottieAnimationView.playAnimation()
-                note.title = nameEditText.text.toString()
-                note.description = noteTextEditText.text.toString()
-               // note.deadline = dateEditText.text.toString()
-                note.priority = spinner.selectedItem as Priority
-                note.category = spinner2.selectedItem as Category
 
-             /*   if (note.priority == "Срочно") {
-                    note.color = resources.getColor(R.color.redCard)
-                }
-                if (note.prioritet == "Важно") {
-                    note.color = resources.getColor(R.color.yellowCard)
-                }
-                if (note.prioritet == "Нужно") {
-                    note.color = resources.getColor(R.color.greenCard)
-                }
-                if (note.prioritet == "Пофиг") {
-                    note.color = resources.getColor(R.color.blueCard)
-                }*/
+                note?.title = nameEditText.text.toString()
+                note?.description = noteTextEditText.text.toString()
+                note?.deadline = ((c.time.time / 1000))
 
-                AppDatabase.getDatabase(requireContext()).NoteDao().insert(note)
+                var needPriority: Priority? = null
+                priorityList?.forEach {
+                    if (it.namePriority == prioritetSpinner.selectedItem) {
+                        needPriority = it
+                    }
+                }
+
+                var needCategory: Category? = null
+                categoryList?.forEach {
+                    if (it.nameCategory == categorySpinner.selectedItem) {
+                        needCategory = it
+                    }
+                }
+
+                note?.priority = needPriority!!
+                note?.category = needCategory!!
+
+                if (!kaef2) {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        var note1 = withContext(Dispatchers.IO) {
+                            try {
+                                savedToken?.let {
+                                    objRetrofit.createRetrofit().createTask(
+                                        "Bearer " +it,
+                                        TaskForm(
+                                            note!!.title,
+                                            note!!.description,
+                                            note!!.done,
+                                            note!!.deadline,
+                                            note!!.category.idCategory,
+                                            note!!.priority.idPriority
+                                        )
+                                    )
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                null
+                            }
+
+                        }
+
+                        AppDatabase.getDatabase(requireContext()).NoteDao().insert(note!!)
+                        return@launch
+
+                    }
+
+                } else {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        var note1 = withContext(Dispatchers.IO) {
+                            try {
+                                savedToken?.let {
+                                    objRetrofit.createRetrofit().updateTask(
+                                        "Bearer " +it,
+                                        note!!.id,
+                                        TaskForm(
+                                            note!!.title,
+                                            note!!.description,
+                                            note!!.done,
+                                            note!!.deadline,
+                                            note!!.category.idCategory,
+                                            note!!.priority.idPriority
+                                        )
+                                    )
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                null
+                            }
+
+                        }
+                        if (note1 != null) {
+                            AppDatabase.getDatabase(requireContext()).NoteDao().insert(note!!)
+                        }
+                        return@launch
+                    }
+                }
+
+
                 findNavController().popBackStack()
             }
         }
 
     }
 
+    fun loadText() {
+        sPref = requireActivity().getSharedPreferences("kek", Context.MODE_PRIVATE)
+        if (sPref.contains("token")) {
+            savedToken = sPref.getString("token", "")
+            kaef = true
+            //   Toast.makeText(this, "Text loaded", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }
 
