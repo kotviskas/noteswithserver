@@ -72,7 +72,9 @@ class CreateNoteFragment : Fragment() {
         var note: Task? = null
         arguments?.let {
             note = CreateNoteFragmentArgs.fromBundle(it).argNote
-            kaef2=true
+            if (note != null) {
+                kaef2 = true
+            }
         }
 
         priorityList?.add(
@@ -148,7 +150,7 @@ class CreateNoteFragment : Fragment() {
         }
 
 
-        var category: Category? = null
+        var category : Category
 
         categoryList?.add(Category("Категория задачи", 0))
         categoryNames.add("Категория задачи")
@@ -238,25 +240,17 @@ class CreateNoteFragment : Fragment() {
 
             dialog.saveTextView.setOnClickListener {
                 alertDialog.dismiss()
-                category?.nameCategory = dialog.addCategoryEditText.text.toString()
+                val title = dialog.addCategoryEditText.text.toString()
 
-                if (category != null) {
-                    categoryList?.add(category)
-                    categoryNames.add(category.nameCategory)
 
-                    if (categoryNames[0] == "Категория задачи") {
-                        categoryNames.removeAt(0)
-                        adapter2.notifyDataSetChanged();
-                    }
-                }
 
                 GlobalScope.launch(Dispatchers.Main) {
                     var category1 = withContext(Dispatchers.IO) {
                         try {
                             savedToken?.let {
                                 objRetrofit.createRetrofit().createCategory(
-                                    "Bearer " +it,
-                                    CategoryForm(category!!.nameCategory)
+                                    "Bearer " + it,
+                                    CategoryForm(title)
                                 )
                             }
                         } catch (e: Exception) {
@@ -266,7 +260,18 @@ class CreateNoteFragment : Fragment() {
 
                     }
 
-                    AppDatabase.getDatabase(requireContext()).CategoryDao().insert(category)
+                    if (category1 != null) {
+                        AppDatabase.getDatabase(requireContext()).CategoryDao().insert(category1)
+                        categoryList?.add(category1)
+                        categoryNames.add(category1.nameCategory)
+
+                        if (categoryNames[0] == "Категория задачи") {
+                            categoryNames.removeAt(0)
+                            adapter2.notifyDataSetChanged();
+                        }
+                    }
+
+
                     return@launch
 
                 }
@@ -301,9 +306,17 @@ class CreateNoteFragment : Fragment() {
                 lottieLayout.visibility = View.VISIBLE
                 lottieAnimationView.playAnimation()
 
-                note?.title = nameEditText.text.toString()
-                note?.description = noteTextEditText.text.toString()
-                note?.deadline = ((c.time.time / 1000))
+                var noteForSave = Task("", "", 0, 0, categoryList!![0], priorityList!![0], 0, 0)
+
+                noteForSave.title = nameEditText.text.toString()
+                noteForSave.description = noteTextEditText.text.toString()
+                if (date!=null) {
+                    noteForSave.deadline = ((date!!.time / 1000))
+                }
+                else {
+                    noteForSave.deadline=note!!.deadline
+                }
+                    noteForSave.done = 0
 
                 var needPriority: Priority? = null
                 priorityList?.forEach {
@@ -319,8 +332,8 @@ class CreateNoteFragment : Fragment() {
                     }
                 }
 
-                note?.priority = needPriority!!
-                note?.category = needCategory!!
+                noteForSave.priority = needPriority!!
+                noteForSave.category = needCategory!!
 
                 if (!kaef2) {
                     GlobalScope.launch(Dispatchers.Main) {
@@ -328,14 +341,14 @@ class CreateNoteFragment : Fragment() {
                             try {
                                 savedToken?.let {
                                     objRetrofit.createRetrofit().createTask(
-                                        "Bearer " +it,
+                                        "Bearer " + it,
                                         TaskForm(
-                                            note!!.title,
-                                            note!!.description,
-                                            note!!.done,
-                                            note!!.deadline,
-                                            note!!.category.idCategory,
-                                            note!!.priority.idPriority
+                                            noteForSave.title,
+                                            noteForSave.description,
+                                            noteForSave.done,
+                                            noteForSave.deadline,
+                                            noteForSave.category.idCategory,
+                                            noteForSave.priority.idPriority
                                         )
                                     )
                                 }
@@ -346,7 +359,9 @@ class CreateNoteFragment : Fragment() {
 
                         }
 
-                        AppDatabase.getDatabase(requireContext()).NoteDao().insert(note!!)
+                        AppDatabase.getDatabase(this@CreateNoteFragment.requireActivity()).NoteDao()
+                            .insert(noteForSave)
+                        findNavController().popBackStack()
                         return@launch
 
                     }
@@ -357,15 +372,15 @@ class CreateNoteFragment : Fragment() {
                             try {
                                 savedToken?.let {
                                     objRetrofit.createRetrofit().updateTask(
-                                        "Bearer " +it,
+                                        "Bearer " + it,
                                         note!!.id,
                                         TaskForm(
-                                            note!!.title,
-                                            note!!.description,
-                                            note!!.done,
-                                            note!!.deadline,
-                                            note!!.category.idCategory,
-                                            note!!.priority.idPriority
+                                            noteForSave.title,
+                                            noteForSave.description,
+                                            noteForSave.done,
+                                            noteForSave.deadline,
+                                            noteForSave.category.idCategory,
+                                            noteForSave.priority.idPriority
                                         )
                                     )
                                 }
@@ -376,14 +391,14 @@ class CreateNoteFragment : Fragment() {
 
                         }
                         if (note1 != null) {
-                            AppDatabase.getDatabase(requireContext()).NoteDao().insert(note!!)
+                            AppDatabase.getDatabase(requireContext()).NoteDao().insert(noteForSave)
                         }
+                        findNavController().popBackStack()
                         return@launch
                     }
                 }
 
 
-                findNavController().popBackStack()
             }
         }
 

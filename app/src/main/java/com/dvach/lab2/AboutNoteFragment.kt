@@ -52,7 +52,7 @@ class AboutNoteFragment : Fragment() {
            // i.putExtra("note", note)
             val action = AboutNoteFragmentDirections.actionAboutNoteFragmentToCreateNoteFragment(note)
             findNavController().navigate(action)
-            findNavController().popBackStack()
+            //findNavController().popBackStack()
 
         }
     }

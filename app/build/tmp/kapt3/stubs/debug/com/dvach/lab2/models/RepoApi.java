@@ -59,7 +59,7 @@ public abstract interface RepoApi {
     kotlin.coroutines.Continuation<? super com.dvach.lab2.pojo.Category> p2);
     
     @org.jetbrains.annotations.Nullable()
-    @retrofit2.http.PATCH(value = "task/{id}")
+    @retrofit2.http.PATCH(value = "tasks/{id}")
     public abstract java.lang.Object updateTask(@org.jetbrains.annotations.NotNull()
     @retrofit2.http.Header(value = "Authorization")
     java.lang.String token, @retrofit2.http.Path(value = "id")

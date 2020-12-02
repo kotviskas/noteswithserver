@@ -53,7 +53,8 @@ class HomeFragment : Fragment(), RecyclerAdapter.OnItemClick, RecyclerAdapter.On
         super.onViewCreated(view, savedInstanceState)
 
         floatingActionButton.setOnClickListener {
-            findNavController().navigate(R.id.createNoteFragment)
+            val act = HomeFragmentDirections.actionHomeFragmentToCreateNoteFragment()
+            findNavController().navigate(act)
         }
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
         recyclerView.adapter = adapter

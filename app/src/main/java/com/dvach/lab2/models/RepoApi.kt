@@ -25,7 +25,7 @@ interface RepoApi {
     @POST("categories")
     suspend fun createCategory(@Header("Authorization") token: String, @Body form: CategoryForm): Category
 
-    @PATCH("task/{id}")
+    @PATCH("tasks/{id}")
     suspend fun updateTask(@Header("Authorization") token:String, @Path ("id") id: Int, @Body form: TaskForm): Task
 
     @DELETE("tasks/{id}")
