@@ -16,10 +16,10 @@ data class Task  (
     var category: Category,
     @Embedded
     var priority: Priority,
-    val created: Int,
+    var created: Int,
 
     @PrimaryKey
-    val id: Int
+    var id: Int
 ): Serializable
 
 @Dao
@@ -35,5 +35,11 @@ interface NoteDao {
 
     @Delete
     fun delete(task: Task)
+
+    @Query("DELETE FROM Task")
+    fun deleteAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(list: ArrayList<Task>)
 }
 

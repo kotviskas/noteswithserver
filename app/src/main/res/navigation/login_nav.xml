@@ -7,19 +7,16 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.dvach.lab2.LoginFragment"
+        android:name="com.dvach.lab2.login.LoginFragmentView"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_regFragment"
             app:destination="@id/regFragment" />
-        <action
-            android:id="@+id/action_login_to_reg"
-            app:destination="@id/regFragment" />
     </fragment>
     <fragment
         android:id="@+id/regFragment"
-        android:name="com.dvach.lab2.RegFragment"
+        android:name="com.dvach.lab2.register.RegFragmentView"
         android:label="fragment_reg"
         tools:layout="@layout/fragment_reg" >
         <action

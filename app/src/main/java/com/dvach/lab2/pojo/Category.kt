@@ -26,7 +26,11 @@ interface CategoryDao {
     @Query("SELECT * FROM Category")
     fun getAllNames(): List<Category>
 
+    @Query("DELETE FROM Category")
+    fun deleteAll()
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(list: ArrayList<Category>)
     @Delete
     fun delete(category: Category)
 }

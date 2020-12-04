@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.dvach.lab2.HomeFragment"
+        android:name="com.dvach.lab2.homepage.HomeFragmentView"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/createNoteFragment"
-        android:name="com.dvach.lab2.CreateNoteFragment"
+        android:name="com.dvach.lab2.createnote.CreateNoteFragmentView"
         android:label="fragment_create_note"
         tools:layout="@layout/fragment_create_note" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/aboutNoteFragment"
-        android:name="com.dvach.lab2.AboutNoteFragment"
+        android:name="com.dvach.lab2.aboutnote.AboutNoteFragmentView"
         android:label="fragment_about_note"
         tools:layout="@layout/fragment_about_note" >
         <action

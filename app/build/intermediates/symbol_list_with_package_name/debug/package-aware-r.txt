@@ -1742,7 +1742,6 @@ id action_homeFragment_to_aboutNoteFragment
 id action_homeFragment_to_createNoteFragment
 id action_image
 id action_loginFragment_to_regFragment
-id action_login_to_reg
 id action_menu_divider
 id action_menu_presenter
 id action_mode_bar
@@ -2065,6 +2064,7 @@ id stop
 id stretch
 id submenuarrow
 id submit_area
+id swipeRefreshLayout
 id tabMode
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans

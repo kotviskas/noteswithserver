@@ -11,24 +11,24 @@ interface RepoApi {
     suspend fun loginUser(@Body form: UserLoginForm): User
 
     @GET("categories")
-    suspend fun getAllCategories(@Header("Authorization") token: String): List<Category>
+    suspend fun getAllCategories(): List<Category>
 
     @GET("priorities")
-    suspend fun getAllPriorities(@Header("Authorization") token: String): List<Priority>
+    suspend fun getAllPriorities(): List<Priority>
 
     @GET("tasks")
-    suspend fun getAllTasks(@Header("Authorization") token: String): List<Task>
+    suspend fun getAllTasks(): List<Task>
 
     @POST("tasks")
-    suspend fun createTask(@Header("Authorization") token: String, @Body form: TaskForm): Task
+    suspend fun createTask(@Body form: TaskForm): Task
 
     @POST("categories")
-    suspend fun createCategory(@Header("Authorization") token: String, @Body form: CategoryForm): Category
+    suspend fun createCategory(@Body form: CategoryForm): Category
 
     @PATCH("tasks/{id}")
-    suspend fun updateTask(@Header("Authorization") token:String, @Path ("id") id: Int, @Body form: TaskForm): Task
+    suspend fun updateTask(@Path ("id") id: Int, @Body form: TaskForm): Task
 
     @DELETE("tasks/{id}")
-    suspend fun deleteTask(@Header("Authorization") token: String,@Path ("id") id: Int)
+    suspend fun deleteTask(@Path ("id") id: Int)
 
 }

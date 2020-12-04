@@ -5,6 +5,7 @@ import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
+import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
@@ -21,6 +22,8 @@ public final class NoteDao_Impl implements NoteDao {
   private final EntityInsertionAdapter<Task> __insertionAdapterOfTask;
 
   private final EntityDeletionOrUpdateAdapter<Task> __deletionAdapterOfTask;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAll;
 
   public NoteDao_Impl(RoomDatabase __db) {
     this.__db = __db;
@@ -89,6 +92,13 @@ public final class NoteDao_Impl implements NoteDao {
         stmt.bindLong(1, value.getId());
       }
     };
+    this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "DELETE FROM Task";
+        return _query;
+      }
+    };
   }
 
   @Override
@@ -104,6 +114,18 @@ public final class NoteDao_Impl implements NoteDao {
   }
 
   @Override
+  public void insertAll(final ArrayList<Task> list) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      __insertionAdapterOfTask.insert(list);
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+    }
+  }
+
+  @Override
   public void delete(final Task task) {
     __db.assertNotSuspendingTransaction();
     __db.beginTransaction();
@@ -112,6 +134,20 @@ public final class NoteDao_Impl implements NoteDao {
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
+    }
+  }
+
+  @Override
+  public void deleteAll() {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAll.acquire();
+    __db.beginTransaction();
+    try {
+      _stmt.executeUpdateDelete();
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+      __preparedStmtOfDeleteAll.release(_stmt);
     }
   }
 
