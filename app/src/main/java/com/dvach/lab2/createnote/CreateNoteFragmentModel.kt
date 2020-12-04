@@ -29,10 +29,9 @@ class CreateNoteFragmentModel(var context: Context, var activity: Activity) {
         loadText()
         priorityList = withContext(Dispatchers.IO) {
             try {
-                savedToken?.let {
-                    objRetrofit.createRetrofit(context ,activity)
-                        .getAllPriorities()
-                } as ArrayList<Priority>
+                objRetrofit.createRetrofit(context, activity)
+                    .getAllPriorities()
+                        as ArrayList<Priority>
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -83,10 +82,10 @@ class CreateNoteFragmentModel(var context: Context, var activity: Activity) {
     suspend fun getCategories(): ArrayList<String> {
         categoryList = withContext(Dispatchers.IO) {
             try {
-                savedToken?.let {
-                    objRetrofit.createRetrofit(context ,activity)
-                        .getAllCategories()
-                } as ArrayList<Category>?
+
+                objRetrofit.createRetrofit(context, activity)
+                    .getAllCategories()
+                        as ArrayList<Category>?
             } catch (e: Exception) {
                 e.printStackTrace()
                 null
@@ -106,106 +105,105 @@ class CreateNoteFragmentModel(var context: Context, var activity: Activity) {
 
     suspend fun createCategory(title: String) {
 
-            var category1 = withContext(Dispatchers.IO) {
-                try {
-                    savedToken?.let {
-                        objRetrofit.createRetrofit(context ,activity)
-                            .createCategory(
+        var category1 = withContext(Dispatchers.IO) {
+            try {
 
-                                CategoryForm(title)
-                            )
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    null
-                }
+                objRetrofit.createRetrofit(context, activity)
+                    .createCategory(
 
+                        CategoryForm(title)
+                    )
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
             }
 
-            if (category1 != null) {
-                AppDatabase.getDatabase(context).CategoryDao().insert(category1)
-                categoryList?.add(category1)
-                categoryNames.add(category1.nameCategory)
+        }
 
-                if (categoryNames[0] == "Категория задачи") {
-                    categoryNames.removeAt(0)
+        if (category1 != null) {
+            AppDatabase.getDatabase(context).CategoryDao().insert(category1)
+            categoryList?.add(category1)
+            categoryNames.add(category1.nameCategory)
 
-                }
+            if (categoryNames[0] == "Категория задачи") {
+                categoryNames.removeAt(0)
+
             }
+        }
 
     }
 
     suspend fun createTask(noteForSave: Task) {
-            val note1 = withContext(Dispatchers.IO) {
-                try {
-                    savedToken?.let {
-                        objRetrofit.createRetrofit(context ,activity).createTask(
+        val note1 = withContext(Dispatchers.IO) {
+            try {
 
-                            TaskForm(
-                                noteForSave.title,
-                                noteForSave.description,
-                                noteForSave.done,
-                                noteForSave.deadline,
-                                noteForSave.category.idCategory,
-                                noteForSave.priority.idPriority
-                            )
-                        )
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    null
-                }
+                objRetrofit.createRetrofit(context, activity).createTask(
 
+                    TaskForm(
+                        noteForSave.title,
+                        noteForSave.description,
+                        noteForSave.done,
+                        noteForSave.deadline,
+                        noteForSave.category.idCategory,
+                        noteForSave.priority.idPriority
+                    )
+                )
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
             }
 
-            if (note1 != null) {
-                AppDatabase.getDatabase(activity).NoteDao()
-                    .insert(note1)
-            } else {
-                noteForSave.created = -1
-                noteForSave.id = -1
+        }
 
-                AppDatabase.getDatabase(activity).NoteDao()
-                    .insert(noteForSave)
-            }
+        if (note1 != null) {
+            AppDatabase.getDatabase(activity).NoteDao()
+                .insert(note1)
+        } else {
+            noteForSave.created = -1
+            noteForSave.id = -1
+
+            AppDatabase.getDatabase(activity).NoteDao()
+                .insert(noteForSave)
+        }
 
     }
 
     suspend fun changeTask(note: Task, noteForSave: Task) {
-            var note1 = withContext(Dispatchers.IO) {
-                try {
-                    savedToken?.let {
-                        objRetrofit.createRetrofit(context ,activity).updateTask(
+        var note1 = withContext(Dispatchers.IO) {
+            try {
 
-                            note.id,
-                            TaskForm(
-                                noteForSave.title,
-                                noteForSave.description,
-                                noteForSave.done,
-                                noteForSave.deadline,
-                                noteForSave.category.idCategory,
-                                noteForSave.priority.idPriority
-                            )
-                        )
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    null
-                }
+                objRetrofit.createRetrofit(context, activity).updateTask(
 
+                    note.id,
+                    TaskForm(
+                        noteForSave.title,
+                        noteForSave.description,
+                        noteForSave.done,
+                        noteForSave.deadline,
+                        noteForSave.category.idCategory,
+                        noteForSave.priority.idPriority
+                    )
+                )
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
             }
-            if (note1 != null) {
-                AppDatabase.getDatabase(activity).NoteDao()
-                    .insert(note1)
-            } else {
-                noteForSave.created = -1
-                noteForSave.id = note!!.id
-                AppDatabase.getDatabase(activity).NoteDao()
-                    .insert(noteForSave)
-            }
+
+        }
+        if (note1 != null) {
+            AppDatabase.getDatabase(activity).NoteDao()
+                .insert(note1)
+        } else {
+            noteForSave.created = -1
+            noteForSave.id = note!!.id
+            AppDatabase.getDatabase(activity).NoteDao()
+                .insert(noteForSave)
+        }
 
     }
-
 
 
     fun loadText() {
@@ -217,7 +215,7 @@ class CreateNoteFragmentModel(var context: Context, var activity: Activity) {
         }
     }
 
-    fun addFirstPriority(){
+    fun addFirstPriority() {
         priorityList?.add(
             Priority(
                 0,
@@ -228,7 +226,7 @@ class CreateNoteFragmentModel(var context: Context, var activity: Activity) {
         priorityNames.add("Importantt")
     }
 
-    fun changeFirstPriority(note: Task?){
+    fun changeFirstPriority(note: Task?) {
         if (priorityNames[0] == "Importantt") {
             priorityNames.removeAt(0)
         }

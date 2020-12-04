@@ -29,12 +29,10 @@ class HomePageModel {
     suspend fun getItems(context: Context, activity: Activity): ArrayList<Item> {
         tasks =
             try {
-                savedToken?.let {
                     objRetrofit.createRetrofit(
                         context,
                         activity
                     ).getAllTasks()
-                }
 
             } catch (e: Exception) {
                 Log.d("error", e.message.toString())
@@ -53,10 +51,9 @@ class HomePageModel {
             flag = true
             categories =
                 try {
-                    savedToken?.let {
                         objRetrofit.createRetrofit(context, activity)
                             .getAllCategories()
-                    }
+
                 } catch (e: Exception) {
                     Log.d("error", e.message.toString())
                     flag = false
@@ -94,14 +91,14 @@ class HomePageModel {
             var note1 =
                 try {
                     var item = items[pos].note_object
-                    savedToken?.let {
+
                         objRetrofit.createRetrofit(
                             context,
                             activity
                         )
                             .deleteTask((items[pos].note_object as Task).id)
 
-                    }
+
                     AppDatabase.getDatabase(activity.applicationContext)
                         .NoteDao()
                         .delete((items[pos].note_object as Task))

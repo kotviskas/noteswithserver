@@ -77,7 +77,7 @@ class HomePagePresenter(var view: HomeFragmentView?) {
     fun onCreate() {
         setAdapter()
         GlobalScope.launch(Dispatchers.IO) {
-            model.synchronize(view!!.requireContext(), view!!.requireActivity())
+          //  model.synchronize(view!!.requireContext(), view!!.requireActivity())
             withContext(Dispatchers.Main) {
                 adapter.notifyDataSetChanged()
             }
