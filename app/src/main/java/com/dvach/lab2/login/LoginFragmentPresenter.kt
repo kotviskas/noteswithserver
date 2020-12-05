@@ -11,7 +11,7 @@ class LoginFragmentPresenter(var view: LogInterface.View?) : LogInterface.Presen
         if (view!!.isValidate()) {
             GlobalScope.launch(Dispatchers.Main) {
                 val form = view?.createLoginForm()
-                if (model.login(view!!.getContext(), view!!.getActivityF(), form!!)) {
+                if (model.login(view!!.getContextT(), view!!.getActivityF(), form!!)) {
                     view?.startMainActivity()
                 } else {
                     view?.showError()

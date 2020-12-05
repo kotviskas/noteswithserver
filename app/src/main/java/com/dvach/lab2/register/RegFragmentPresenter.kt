@@ -8,12 +8,12 @@ class RegFragmentPresenter(var view: RegInteface.View?) : RegInteface.Presenter 
     var model = RegFragmentModel()
 
     override fun onAddUserBtn() {
-        if (model.getUserFromDB(view!!.getContext(),view!!.getEmail()) == null
+        if (model.getUserFromDB(view!!.getContextT(),view!!.getEmail()) == null
         ) {
             if (view!!.validation()) {
                 GlobalScope.launch(Dispatchers.Main) {
                     val form = view!!.createRegForm()
-                    if (model.registration(form, view!!.getContext(), view!!.getActivityF())) {
+                    if (model.registration(form, view!!.getContextT(), view!!.getActivityF())) {
                         view!!.startMainActivity()
                     }
                     else{

@@ -51,7 +51,7 @@ class LoginFragmentView : Fragment(), LogInterface.View {
         presenter.onDestroy()
     }
 
-    override fun getContext(): Context {
+    override fun getContextT(): Context {
         return requireContext()
     }
 

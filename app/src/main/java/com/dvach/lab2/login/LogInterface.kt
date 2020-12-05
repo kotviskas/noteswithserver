@@ -12,7 +12,7 @@ interface LogInterface {
             fun startMainActivity()
             fun showError()
             fun isValidate(): Boolean
-            fun getContext() : Context
+            fun getContextT() : Context
             fun getActivityF(): FragmentActivity
         }
 

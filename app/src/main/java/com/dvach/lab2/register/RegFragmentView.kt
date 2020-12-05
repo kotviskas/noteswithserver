@@ -66,7 +66,7 @@ class RegFragmentView : Fragment(), RegInteface.View {
     override fun showEmailError() {
         Toast.makeText(requireContext(), "Пользователь с таким email уже существует", Toast.LENGTH_SHORT).show()
     }
-    override fun getContext(): Context {
+    override fun getContextT(): Context {
         return requireContext()
     }
 

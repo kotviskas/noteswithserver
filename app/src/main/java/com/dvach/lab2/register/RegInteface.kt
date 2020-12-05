@@ -13,7 +13,7 @@ interface RegInteface {
         fun createRegForm(): UserRegistrationForm
         fun validation(): Boolean
         fun navigateToLoginFragment()
-        fun getContext() : Context
+        fun getContextT() : Context
         fun getActivityF(): FragmentActivity
     }
 
