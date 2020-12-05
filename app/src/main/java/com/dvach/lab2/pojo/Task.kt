@@ -18,7 +18,7 @@ data class Task  (
     var priority: Priority,
     var created: Int,
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Int
 ): Serializable
 

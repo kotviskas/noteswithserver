@@ -30,7 +30,7 @@ public final class NoteDao_Impl implements NoteDao {
     this.__insertionAdapterOfTask = new EntityInsertionAdapter<Task>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR REPLACE INTO `Task` (`title`,`description`,`done`,`deadline`,`created`,`id`,`nameCategory`,`idCategory`,`idPriority`,`namePriority`,`color`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `Task` (`title`,`description`,`done`,`deadline`,`created`,`id`,`nameCategory`,`idCategory`,`idPriority`,`namePriority`,`color`) VALUES (?,?,?,?,?,nullif(?, 0),?,?,?,?,?)";
       }
 
       @Override

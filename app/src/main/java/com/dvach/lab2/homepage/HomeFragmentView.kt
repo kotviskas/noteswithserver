@@ -1,11 +1,13 @@
 package com.dvach.lab2.homepage
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,12 +20,15 @@ import com.dvach.lab2.recyclerAdapter.RecyclerAdapter
 import com.dvach.lab2.pojo.Task
 import kotlinx.android.synthetic.main.fragment_create_note.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 
 
-class HomeFragmentView : Fragment(), RecyclerAdapter.OnItemClick, RecyclerAdapter.OnCheck {
+class HomeFragmentView : Fragment(), HomePageInterface.View{
 
 
-    lateinit var presenter: HomePagePresenter
+    lateinit var presenter: HomePageInterface.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,19 +95,19 @@ class HomeFragmentView : Fragment(), RecyclerAdapter.OnItemClick, RecyclerAdapte
         presenter.onDestroy()
     }
 
-    fun showNotes(){
+    override fun showNotes(){
         imageView.visibility = View.INVISIBLE
         textView.visibility = View.INVISIBLE
         recyclerView.visibility = View.VISIBLE
     }
 
-    fun showPlaceholder(){
+    override fun showPlaceholder(){
         imageView.visibility = View.VISIBLE
         textView.visibility = View.VISIBLE
         recyclerView.visibility = View.INVISIBLE
     }
 
-    fun stopRefreshAnimation() {
+    override fun stopRefreshAnimation() {
         swipeRefreshLayout.isRefreshing = false
     }
 
@@ -110,7 +115,7 @@ class HomeFragmentView : Fragment(), RecyclerAdapter.OnItemClick, RecyclerAdapte
         presenter.noteClick(task)
     }
 
-    fun navigateToAboutNote(task: Task){
+    override fun navigateToAboutNote(task: Task){
         val action =
             HomeFragmentViewDirections.actionHomeFragmentToAboutNoteFragment(
                 task
@@ -122,7 +127,7 @@ class HomeFragmentView : Fragment(), RecyclerAdapter.OnItemClick, RecyclerAdapte
         presenter.changeCheck(task)
     }
 
-    fun startSplashActivity(){
+    override fun startSplashActivity(){
         startActivity(
             Intent(
                 requireContext(),
@@ -132,13 +137,24 @@ class HomeFragmentView : Fragment(), RecyclerAdapter.OnItemClick, RecyclerAdapte
         requireActivity().finish()
     }
 
+    override fun getContextT(): Context {
 
-    fun setRecycleParameters(adapter: RecyclerAdapter){
+            return requireContext()
+
+    }
+
+    override fun getActivityF(): FragmentActivity {
+        return requireActivity()
+    }
+
+
+
+    override fun setRecycleParameters(adapter: RecyclerAdapter){
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
         recyclerView.adapter = adapter
     }
 
-    fun navigateToCreateNote(){
+    override fun navigateToCreateNote(){
         val act =
             HomeFragmentViewDirections.actionHomeFragmentToCreateNoteFragment()
         findNavController().navigate(act)

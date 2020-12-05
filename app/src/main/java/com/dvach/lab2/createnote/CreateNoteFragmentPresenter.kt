@@ -11,13 +11,13 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CreateNoteFragmentPresenter(var view: CreateNoteFragmentView?) {
+class CreateNoteFragmentPresenter (var view: CreateNoteFragmentInterface.View?) : CreateNoteFragmentInterface.Presenter  {
     lateinit var adapter: ArrayAdapter<String>
     lateinit var adapter2: ArrayAdapter<String>
-    var model = CreateNoteFragmentModel(view!!.requireContext(),view!!.requireActivity())
+    var model = CreateNoteFragmentModel(view!!.getContextT(),view!!.getActivityF())
     var note:Task? = null
 
-    fun onViewCreated(){
+    override fun onViewCreated(){
         note = view!!.setTask()
         view!!.setSpinnerAdapters(adapter,adapter2)
         model.loadText()
@@ -37,15 +37,16 @@ class CreateNoteFragmentPresenter(var view: CreateNoteFragmentView?) {
 
     }
 
-    fun onCreate(){
+    override fun onCreate(){
         setAdapter()
     }
 
-    fun onDestroy() {
+
+    override fun onDestroy() {
         view = null
     }
 
-    fun onSaveNoteBtn(kaef2:Boolean, date: Date?){
+    override fun onSaveNoteBtn(kaef2:Boolean, date: Date?){
         if (view!!.isValidate()) {
             view!!.showAnimation()
             val noteForSave = createNewTask(date, note, view!!.getNameEditText(), view!!.getNoteTextEditText(), view!!.getPrioritetSpinner(), view!!.getCategorySpinner(), model.priorityList, model.categoryList)
@@ -66,15 +67,15 @@ class CreateNoteFragmentPresenter(var view: CreateNoteFragmentView?) {
         }
     }
 
-    fun onAddCategory(){
+    override fun onAddCategory(){
         view!!.onAddCategory()
     }
 
-    fun onAddDate() {
+    override fun onAddDate() {
         view!!.getDate()
     }
 
-    fun onDialogSaveTextView(title: String, alertDialog: androidx.appcompat.app.AlertDialog){
+    override fun onDialogSaveTextView(title: String, alertDialog: androidx.appcompat.app.AlertDialog){
         view!!.hideDialog(alertDialog)
         GlobalScope.launch(Dispatchers.Main) {
             model.createCategory(title)
@@ -83,27 +84,27 @@ class CreateNoteFragmentPresenter(var view: CreateNoteFragmentView?) {
         adapter2.notifyDataSetChanged();
     }
 
-    fun onDialogBack(alertDialog: androidx.appcompat.app.AlertDialog){
+    override fun onDialogBack(alertDialog: androidx.appcompat.app.AlertDialog){
         view!!.hideDialog(alertDialog)
     }
 
-    fun onBackImg(){
+    override fun onBackImg(){
         view!!.goBack()
     }
 
     private fun setAdapter(){
         adapter = ArrayAdapter<String>(
-            view!!.requireContext(),
+            view!!.getContextT(),
             R.layout.spinnertext, model.priorityNames
         )
         adapter2 = ArrayAdapter<String>(
-            view!!.requireContext(), R.layout.spinnertext, model.categoryNames
+            view!!.getContextT(), R.layout.spinnertext, model.categoryNames
         )
         adapter.setDropDownViewResource(R.layout.spinnertext)
         adapter2.setDropDownViewResource(R.layout.spinnertext)
     }
 
-    fun createNewTask(date: Date?, note: Task?, nameEditText : String,  noteTextEditText:String, prioritetSpinner : String, categorySpinner: String, priorityList: ArrayList<Priority>?, categoryList: ArrayList<Category>?): Task {
+    override fun createNewTask(date: Date?, note: Task?, nameEditText : String,  noteTextEditText:String, prioritetSpinner : String, categorySpinner: String, priorityList: ArrayList<Priority>?, categoryList: ArrayList<Category>?): Task {
         var noteForSave = Task("", "", 0, 0, categoryList!![0], priorityList!![0], 0, 0)
 
         noteForSave.title = nameEditText

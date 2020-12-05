@@ -17,8 +17,8 @@ import java.util.*
 import kotlin.time.days
 
 
-class AboutNoteFragmentView : Fragment() {
-    lateinit var presenter:AboutNoteFragmentPresenter
+class AboutNoteFragmentView : Fragment(), AboutNoteFragmentInterface.View {
+    lateinit var presenter:AboutNoteFragmentInterface.Presenter
     var note : Task? = null
 
     override fun onCreateView(
@@ -50,7 +50,7 @@ class AboutNoteFragmentView : Fragment() {
         presenter.onDestroy()
     }
 
-    fun navigateToCreateNoteFragment(note: Task){
+    override fun navigateToCreateNoteFragment(note: Task){
         val action =
             AboutNoteFragmentViewDirections.actionAboutNoteFragmentToCreateNoteFragment(
                 note
@@ -58,7 +58,7 @@ class AboutNoteFragmentView : Fragment() {
         findNavController().navigate(action)
     }
 
-    fun goBack(){
+    override fun goBack(){
         findNavController().popBackStack()
     }
 
@@ -70,7 +70,7 @@ class AboutNoteFragmentView : Fragment() {
         return note
     }
 
-    fun setText(note: Task){
+    override fun setText(note: Task){
         noteNameTextView.text = note.title
         categoryNameTextView.text = note.category.nameCategory
         textTextView.text = note.description

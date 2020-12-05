@@ -4,16 +4,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class RegFragmentPresenter(var view: RegFragmentView?) {
+class RegFragmentPresenter(var view: RegInteface.View?) : RegInteface.Presenter {
     var model = RegFragmentModel()
 
-    fun onAddUserBtn() {
-        if (model.getUserFromDB(view!!.requireContext(),view!!.getEmail()) == null
+    override fun onAddUserBtn() {
+        if (model.getUserFromDB(view!!.getContext(),view!!.getEmail()) == null
         ) {
             if (view!!.validation()) {
                 GlobalScope.launch(Dispatchers.Main) {
                     val form = view!!.createRegForm()
-                    if (model.registration(form, view!!.requireContext(), view!!.requireActivity())) {
+                    if (model.registration(form, view!!.getContext(), view!!.getActivityF())) {
                         view!!.startMainActivity()
                     }
                     else{
@@ -28,11 +28,11 @@ class RegFragmentPresenter(var view: RegFragmentView?) {
         }
     }
 
-    fun onLoginTextView() {
+    override fun onLoginTextView() {
         view!!.navigateToLoginFragment()
     }
 
-    fun onDestroy() {
+    override fun onDestroy() {
         view = null
     }
 }

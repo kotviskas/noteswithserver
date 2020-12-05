@@ -1,6 +1,8 @@
 package com.dvach.lab2.createnote
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import com.dvach.lab2.createnote.CreateNoteFragmentViewArgs
 import com.dvach.lab2.R
@@ -19,11 +22,11 @@ import java.text.DateFormat
 import java.util.*
 
 
-class CreateNoteFragmentView : Fragment() {
+class CreateNoteFragmentView : Fragment(), CreateNoteFragmentInterface.View {
 
     var kaef2: Boolean = false
     var date1: Date? = null
-    lateinit var presenter: CreateNoteFragmentPresenter
+    lateinit var presenter: CreateNoteFragmentInterface.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +69,7 @@ class CreateNoteFragmentView : Fragment() {
         presenter.onDestroy()
     }
 
-    fun onAddCategory(){
+    override fun onAddCategory(){
         val dialog = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_layout, null)
         val builder = AlertDialog.Builder(requireContext())
             .setView(dialog)
@@ -82,12 +85,12 @@ class CreateNoteFragmentView : Fragment() {
         }
     }
 
-    fun setSpinnerAdapters(adapter:ArrayAdapter<String>, adapter2:ArrayAdapter<String>){
+    override fun setSpinnerAdapters(adapter:ArrayAdapter<String>, adapter2:ArrayAdapter<String>){
         prioritetSpinner.adapter = adapter
         categorySpinner.adapter = adapter2
     }
 
-    fun setTask(): Task? {
+    override fun setTask(): Task? {
         var note: Task? = null
         arguments?.let {
             note = CreateNoteFragmentViewArgs.fromBundle(it).argNote
@@ -104,23 +107,23 @@ class CreateNoteFragmentView : Fragment() {
         return note
     }
 
-    fun getNameEditText(): String {
+    override fun getNameEditText(): String {
         return nameEditText.text.toString()
     }
 
-    fun getNoteTextEditText(): String {
+    override fun getNoteTextEditText(): String {
         return noteTextEditText.text.toString()
     }
 
-    fun getPrioritetSpinner(): String {
+    override fun getPrioritetSpinner(): String {
         return prioritetSpinner.selectedItem as String
     }
-    fun getCategorySpinner(): String {
+    override fun getCategorySpinner(): String {
         return categorySpinner.selectedItem as String
     }
 
 
-    fun getDate() {
+    override fun getDate() {
         var c = Calendar.getInstance()
         var year = c.get(Calendar.YEAR)
         var month = c.get(Calendar.MONTH)
@@ -140,18 +143,18 @@ class CreateNoteFragmentView : Fragment() {
         dpd.show()
     }
 
-    fun hideDialog(alertDialog: AlertDialog) {
+    override fun hideDialog(alertDialog: AlertDialog) {
         alertDialog.dismiss()
     }
 
 
 
-    fun showAnimation() {
+    override fun showAnimation() {
         lottieLayout.visibility = View.VISIBLE
         lottieAnimationView.playAnimation()
     }
 
-    fun isValidate(): Boolean {
+    override fun isValidate(): Boolean {
         var validation = InputValidation(requireContext())
         return (validation.isInputEditTextFilled(
             nameEditText,
@@ -168,9 +171,16 @@ class CreateNoteFragmentView : Fragment() {
         ) && categorySpinner.selectedItem.toString() != "Категория задачи")
     }
 
+    override fun getContextT(): Context {
+        return requireContext()
+    }
+
+    override fun getActivityF(): FragmentActivity {
+        return requireActivity()
+    }
 
 
-    fun goBack() {
+    override fun goBack() {
         findNavController().popBackStack()
     }
 

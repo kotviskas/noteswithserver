@@ -8,48 +8,50 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomePagePresenter(var view: HomeFragmentView?) {
+class HomePagePresenter(var view: HomePageInterface.View?) : HomePageInterface.Presenter{
     var model = HomePageModel()
     lateinit var adapter: RecyclerAdapter
 
-    fun whenFloatingActionButton() {
+    override fun whenFloatingActionButton() {
         view?.navigateToCreateNote()
     }
 
-    fun whenExit() {
-        model.deleteToken(view!!.requireActivity())
-        model.clearDatabase(view!!.requireContext())
+    override fun whenExit() {
+        model.deleteToken(view!!.getActivityF())
+        model.clearDatabase(view!!.getContextT())
         view?.startSplashActivity()
     }
 
-    fun noteClick(task: Task) {
+    override fun noteClick(task: Task) {
         view?.navigateToAboutNote(task)
     }
 
-    fun changeCheck(task: Task) {
-        model.changeTaskDone(task, view!!.requireContext(), view!!.requireActivity())
+    override fun changeCheck(task: Task) {
+        model.changeTaskDone(task, view!!.getContextT(), view!!.getActivityF())
     }
 
-    fun whenSwiped(viewHolder: RecyclerView.ViewHolder) {
+    override fun whenSwiped(viewHolder: RecyclerView.ViewHolder) {
         GlobalScope.launch(Dispatchers.IO) {
-            model.whenSwiped(viewHolder, view!!.requireContext(), view!!.requireActivity())
+            var context = withContext(Dispatchers.Main){view!!.getContextT()}
+            var activity = withContext(Dispatchers.Main){view!!.getActivityF()}
+            model.whenSwiped(viewHolder, context, activity)
             withContext(Dispatchers.Main) {
                 adapter.notifyDataSetChanged()
             }
         }
     }
 
-    fun onViewCreated() {
+    override fun onViewCreated() {
         view?.setRecycleParameters(adapter)
     }
 
-    fun onResume() {
-        model.loadText(view!!.requireActivity())
+    override fun onResume() {
+        model.loadText(view!!.getActivityF())
         //получение тасков
         GlobalScope.launch(Dispatchers.Main) {
             var items =
                 withContext(Dispatchers.IO) {
-                    model.getItems(view!!.requireContext(), view!!.requireActivity())
+                    model.getItems(view!!.getContextT(), view!!.getActivityF())
                 }
             adapter.notifyDataSetChanged()
             if (items.size != 0) {
@@ -60,26 +62,29 @@ class HomePagePresenter(var view: HomeFragmentView?) {
         }
     }
 
-    fun onRefresh(){
+    override fun onRefresh(){
         GlobalScope.launch(Dispatchers.IO) {
-            model.synchronize(view!!.requireContext(), view!!.requireActivity())
-            withContext(Dispatchers.Main) {
-                adapter.notifyDataSetChanged()
+            if (model.synchronize(view!!.getContextT(), view!!.getActivityF())) {
+                withContext(Dispatchers.Main) {
+                    adapter.notifyDataSetChanged()
+                }
+                view!!.stopRefreshAnimation()
             }
-            view!!.stopRefreshAnimation()
+
         }
     }
 
-    fun onDestroy() {
+    override fun onDestroy() {
         view = null
     }
 
-    fun onCreate() {
+    override fun onCreate() {
         setAdapter()
         GlobalScope.launch(Dispatchers.IO) {
-          //  model.synchronize(view!!.requireContext(), view!!.requireActivity())
-            withContext(Dispatchers.Main) {
-                adapter.notifyDataSetChanged()
+            if (model.synchronize(view!!.getContextT(), view!!.getActivityF())) {
+                withContext(Dispatchers.Main) {
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
     }

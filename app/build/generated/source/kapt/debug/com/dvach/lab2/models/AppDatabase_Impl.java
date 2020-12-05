@@ -41,10 +41,10 @@ public final class AppDatabase_Impl extends AppDatabase {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `User` (`name` TEXT NOT NULL, `email` TEXT NOT NULL, `api_token` TEXT NOT NULL, `userId` INTEGER NOT NULL, PRIMARY KEY(`userId`))");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `Task` (`title` TEXT NOT NULL, `description` TEXT NOT NULL, `done` INTEGER NOT NULL, `deadline` INTEGER NOT NULL, `created` INTEGER NOT NULL, `id` INTEGER NOT NULL, `nameCategory` TEXT NOT NULL, `idCategory` INTEGER NOT NULL, `idPriority` INTEGER NOT NULL, `namePriority` TEXT NOT NULL, `color` TEXT NOT NULL, PRIMARY KEY(`id`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `Task` (`title` TEXT NOT NULL, `description` TEXT NOT NULL, `done` INTEGER NOT NULL, `deadline` INTEGER NOT NULL, `created` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nameCategory` TEXT NOT NULL, `idCategory` INTEGER NOT NULL, `idPriority` INTEGER NOT NULL, `namePriority` TEXT NOT NULL, `color` TEXT NOT NULL)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `Category` (`nameCategory` TEXT NOT NULL, `idCategory` INTEGER NOT NULL, PRIMARY KEY(`idCategory`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0739eada2dbb147312be3f205a158fd3')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b8516e2a0342192ee596da4950a1cc7b')");
       }
 
       @Override
@@ -139,7 +139,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "0739eada2dbb147312be3f205a158fd3", "078ba4514a4f9571bfa2b9f95d726f1c");
+    }, "b8516e2a0342192ee596da4950a1cc7b", "0aae71767baff0786d8b5103566c7be6");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

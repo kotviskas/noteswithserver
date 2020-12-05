@@ -1,5 +1,6 @@
 package com.dvach.lab2.register
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import com.dvach.lab2.MainActivity
 import com.dvach.lab2.R
@@ -15,9 +17,9 @@ import com.dvach.lab2.recyclerAdapter.InputValidation
 import com.dvach.lab2.pojo.UserRegistrationForm
 import kotlinx.android.synthetic.main.fragment_reg.*
 
-class RegFragmentView : Fragment() {
+class RegFragmentView : Fragment(), RegInteface.View {
     lateinit var sPref: SharedPreferences
-    lateinit var presenter:RegFragmentPresenter
+    lateinit var presenter:RegInteface.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,25 +50,31 @@ class RegFragmentView : Fragment() {
         presenter.onDestroy()
     }
 
-    fun startMainActivity() {
+    override fun startMainActivity() {
         val i = Intent(requireContext(), MainActivity::class.java)
         startActivity(i)
     }
 
-    fun getEmail(): String {
+    override fun getEmail(): String {
         return emailText.text.toString()
     }
 
-    fun showError() {
+    override fun showError() {
         Toast.makeText(requireContext(), "Повторите позднее", Toast.LENGTH_SHORT).show()
     }
 
-    fun showEmailError() {
+    override fun showEmailError() {
         Toast.makeText(requireContext(), "Пользователь с таким email уже существует", Toast.LENGTH_SHORT).show()
     }
+    override fun getContext(): Context {
+        return requireContext()
+    }
 
+    override fun getActivityF(): FragmentActivity {
+        return requireActivity()
+    }
 
-    fun createRegForm(): UserRegistrationForm {
+    override fun createRegForm(): UserRegistrationForm {
         return UserRegistrationForm(
             emailText.text.toString(),
             nameText.text.toString(),
@@ -74,7 +82,7 @@ class RegFragmentView : Fragment() {
         )
     }
 
-    fun validation(): Boolean {
+    override fun validation(): Boolean {
         var validation = InputValidation(requireContext())
         return (validation.isInputEditTextEmail(
             emailText,
@@ -102,7 +110,7 @@ class RegFragmentView : Fragment() {
         ))
     }
 
-    fun navigateToLoginFragment() {
+    override fun navigateToLoginFragment() {
         val action = RegFragmentViewDirections.actionRegToLogin()
         findNavController().navigate(action)
     }

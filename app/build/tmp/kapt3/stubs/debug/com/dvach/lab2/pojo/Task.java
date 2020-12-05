@@ -18,7 +18,7 @@ public final class Task implements java.io.Serializable {
     @androidx.room.Embedded()
     private com.dvach.lab2.pojo.Priority priority;
     private int created;
-    @androidx.room.PrimaryKey()
+    @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
     
     @org.jetbrains.annotations.NotNull()

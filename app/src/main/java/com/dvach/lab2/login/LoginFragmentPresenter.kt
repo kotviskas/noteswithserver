@@ -4,14 +4,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class LoginFragmentPresenter(var view: LoginFragmentView?) {
+class LoginFragmentPresenter(var view: LogInterface.View?) : LogInterface.Presenter {
     var model = LoginFragmentModel()
 
-    fun tryToLogin() {
+    override fun tryToLogin() {
         if (view!!.isValidate()) {
             GlobalScope.launch(Dispatchers.Main) {
                 val form = view?.createLoginForm()
-                if (model.login(view!!.requireContext(), view!!.requireActivity(), form!!)) {
+                if (model.login(view!!.getContext(), view!!.getActivityF(), form!!)) {
                     view?.startMainActivity()
                 } else {
                     view?.showError()
@@ -20,11 +20,11 @@ class LoginFragmentPresenter(var view: LoginFragmentView?) {
         }
     }
 
-    fun onRegisterText(){
+    override fun onRegisterText(){
         view?.navigateToRegFragment()
     }
 
-    fun onDestroy() {
+    override fun onDestroy() {
         view = null
     }
 }

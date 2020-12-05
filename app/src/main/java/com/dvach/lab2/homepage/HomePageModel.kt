@@ -127,7 +127,7 @@ class HomePageModel {
         AppDatabase.getDatabase(context).clearAllTables()
     }
 
-    suspend fun synchronize(context: Context, activity: Activity) {
+    suspend fun synchronize(context: Context, activity: Activity): Boolean {
         isSynchronized = false
 
         while (!isSynchronized) {
@@ -137,9 +137,9 @@ class HomePageModel {
 
             val api = objRetrofit.createRetrofit(context, activity)
             val tasks = AppDatabase.getDatabase(context).NoteDao().getAllTitles()
-            val tasksToChange = tasks.filter { s -> s.created == -1 }
-            val createdTasks = tasksToChange.filter { s -> s.id == -1 }
-            val changedTasks = tasksToChange.filter { s -> s.id != -1 }
+           // val tasksToChange = tasks.filter { s -> s.created == -1 }
+            val createdTasks = tasks.filter { s -> s.created == -1 }
+            val changedTasks = tasks.filter { s -> s.created == -2 }
             val deletedTasks = tasks.filter { s -> s.created == -3 }
 
             var error = false
@@ -194,17 +194,21 @@ class HomePageModel {
                         "Synchronization",
                         "Successfully"
                     )
+
                 } catch (e: java.lang.Exception) {
                     error = true
                 }
             }
-              withContext(Dispatchers.Main) {
-                  MainActivity.disableSynchronizationAnimation()
-              }
+            delay(1500)
+            withContext(Dispatchers.Main) {
+                MainActivity.disableSynchronizationAnimation()
+            }
+
             if (error) {
                 delay(10000)
             }
         }
+        return isSynchronized
 
     }
 
@@ -234,7 +238,7 @@ class HomePageModel {
                     )
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    task.created=-1
+                    task.created=-2
                     null
                 }
 

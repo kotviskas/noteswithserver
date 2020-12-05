@@ -162,7 +162,7 @@ class CreateNoteFragmentModel(var context: Context, var activity: Activity) {
                 .insert(note1)
         } else {
             noteForSave.created = -1
-            noteForSave.id = -1
+
 
             AppDatabase.getDatabase(activity).NoteDao()
                 .insert(noteForSave)
@@ -197,7 +197,7 @@ class CreateNoteFragmentModel(var context: Context, var activity: Activity) {
             AppDatabase.getDatabase(activity).NoteDao()
                 .insert(note1)
         } else {
-            noteForSave.created = -1
+            noteForSave.created = -2
             noteForSave.id = note!!.id
             AppDatabase.getDatabase(activity).NoteDao()
                 .insert(noteForSave)

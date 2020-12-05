@@ -3,21 +3,21 @@ package com.dvach.lab2.aboutnote
 import com.dvach.lab2.pojo.Task
 
 
-class AboutNoteFragmentPresenter(var view: AboutNoteFragmentView?) {
+class AboutNoteFragmentPresenter(var view: AboutNoteFragmentInterface.View?) : AboutNoteFragmentInterface.Presenter {
 
-    fun onViewCreated(note: Task) {
+    override fun onViewCreated(note: Task) {
         view?.setText(note!!)
     }
 
-    fun onDestroy() {
+    override fun onDestroy() {
         view = null
     }
 
-    fun onGoBack(){
+    override fun onGoBack(){
         view?.goBack()
     }
 
-    fun changeImageView(note: Task){
+    override fun changeImageView(note: Task){
         view?.navigateToCreateNoteFragment(note!!)
     }
 }

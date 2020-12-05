@@ -1,5 +1,6 @@
 package com.dvach.lab2.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import com.dvach.lab2.MainActivity
 import com.dvach.lab2.R
@@ -15,8 +17,8 @@ import com.dvach.lab2.pojo.UserLoginForm
 import com.dvach.lab2.register.RegFragmentViewDirections
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragmentView : Fragment() {
-    lateinit var presenter: LoginFragmentPresenter
+class LoginFragmentView : Fragment(), LogInterface.View {
+    lateinit var presenter: LogInterface.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,29 +51,37 @@ class LoginFragmentView : Fragment() {
         presenter.onDestroy()
     }
 
-    fun navigateToRegFragment() {
+    override fun getContext(): Context {
+        return requireContext()
+    }
+
+    override fun getActivityF(): FragmentActivity {
+        return requireActivity()
+    }
+
+    override fun navigateToRegFragment() {
         val action = LoginFragmentViewDirections.actionLoginFragmentToRegFragment()
         findNavController().navigate(action)
     }
 
-    fun createLoginForm(): UserLoginForm {
+    override fun createLoginForm(): UserLoginForm {
         return UserLoginForm(
             emailText.text.toString(),
             passwordText.text.toString()
         )
     }
 
-    fun startMainActivity() {
+    override fun startMainActivity() {
         val i = Intent(requireContext(), MainActivity::class.java)
         startActivity(i)
         requireActivity().finish()
     }
 
-    fun showError() {
+    override fun showError() {
         Toast.makeText(requireContext(), "Неправильный логин или пароль", Toast.LENGTH_SHORT).show()
     }
 
-    fun isValidate(): Boolean {
+    override fun isValidate(): Boolean {
         val validation = InputValidation(requireContext())
         return validation.isInputEditTextEmail(
             emailText,
